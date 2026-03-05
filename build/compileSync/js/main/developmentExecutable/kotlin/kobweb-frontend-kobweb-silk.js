@@ -27,9 +27,9 @@
   var rememberComposableLambda = kotlin_androidx_compose_runtime_runtime.$_$.b;
   var sourceInformationMarkerStart = kotlin_androidx_compose_runtime_runtime.$_$.z;
   var Companion_getInstance = kotlin_androidx_compose_runtime_runtime.$_$.k1;
-  var THROW_CCE = kotlin_kotlin.$_$.eh;
+  var THROW_CCE = kotlin_kotlin.$_$.dh;
   var sourceInformationMarkerEnd = kotlin_androidx_compose_runtime_runtime.$_$.y;
-  var KobwebApp = kotlin_com_varabyte_kobweb_kobweb_core.$_$.d;
+  var KobwebApp = kotlin_com_varabyte_kobweb_kobweb_core.$_$.c;
   var Unit_getInstance = kotlin_kotlin.$_$.p4;
   var KobwebComposeStyles = kotlin_com_varabyte_kobweb_kobweb_compose.$_$.q3;
   var SilkFoundationStyles = kotlin_com_varabyte_kobweb_silk_foundation.$_$.a2;

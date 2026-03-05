@@ -12,9 +12,9 @@
 }(function (_, kotlin_kotlin) {
   'use strict';
   //region block: imports
-  var THROW_CCE = kotlin_kotlin.$_$.eh;
+  var THROW_CCE = kotlin_kotlin.$_$.dh;
   var protoOf = kotlin_kotlin.$_$.md;
-  var Annotation = kotlin_kotlin.$_$.pg;
+  var Annotation = kotlin_kotlin.$_$.og;
   var initMetadataForClass = kotlin_kotlin.$_$.kc;
   var VOID = kotlin_kotlin.$_$.d;
   //endregion
