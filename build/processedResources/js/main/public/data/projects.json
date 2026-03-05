@@ -1,0 +1,28 @@
+[
+  {
+    "id": "mork-materie",
+    "title": "Mørk Materie",
+    "description": "Abstrakt KI generert kortfilm om mørk materie sett gjennom et nevralt nettverk. Utforsker form, geometri og lys.",
+    "coverImage": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
+    "mediaUrls": [
+      "https://www.w3schools.com/html/mov_bbb.mp4",
+      "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80"
+    ]
+  },
+  {
+    "id": "lys-refleksjon",
+    "title": "Lys Refleksjon",
+    "description": "En studie i virtuell lyssetting bygget fra bunnen med custom Stable Diffusion modeller.",
+    "coverImage": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80",
+    "mediaUrls": []
+  },
+  {
+    "id": "skygge-dybde",
+    "title": "Skygge Dybde",
+    "description": "Minimalistisk utforskning av dybdeinformasjon konvertert til monokrome visuelle opplevelser.",
+    "coverImage": "https://images.unsplash.com/photo-1507502707541-f369a3b18502?auto=format&fit=crop&w=1200&q=80",
+    "mediaUrls": [
+      "https://images.unsplash.com/photo-1507502707541-f369a3b18502?auto=format&fit=crop&w=1200&q=80"
+    ]
+  }
+]

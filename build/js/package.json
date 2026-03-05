@@ -1,0 +1,16 @@
+{
+  "name": "portfolio",
+  "version": "1.0-SNAPSHOT",
+  "private": true,
+  "workspaces": [
+    "packages/portfolio",
+    "packages/portfolio-test",
+    "packages_imported/html-core-js/1.10.0"
+  ],
+  "devDependencies": {},
+  "dependencies": {},
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": [],
+  "resolutions": {}
+}

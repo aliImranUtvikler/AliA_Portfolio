@@ -1,0 +1,54 @@
+metadata:
+  name: "app"
+  description: "A template for a minimal web app that demonstrates the basic features of Kobweb"
+  shouldHighlight: true
+
+instructions:
+  # Note: Kobweb provides a "projectFolder" variable for us already
+
+  - !<QueryVar>
+    name: "projectTitle"
+    prompt: "What is the user-visible display title for your project?"
+    default: "${fileToTitle(projectFolder)}"
+    validation: "isNotEmpty"
+  - !<DefineVar>
+    name: "projectName"
+    value: "${fileToPackage(projectFolder)}"
+  - !<Inform>
+    message: "Note: The group ID should uniquely identify your project and organization."
+  - !<Inform>
+    message: "'io.github.(username).(projectname)' can work for a hobby project."
+  - !<QueryVar>
+    name: "groupId"
+    prompt: "What is the group ID for your project?"
+    default: "org.example.${projectName}"
+    validation: "isPackage"
+  # Overwrite projectName, since the user's group ID should be a more accurate indication
+  # of what the user wants their project name to be than the initial folder.
+  # Note: the "ensure_starts_with" is kind of a hack, to prevent a crash if someone didn't
+  # put ANY .'s in their group.
+  - !<DefineVar>
+    name: "projectName"
+    value: "${groupId?ensure_starts_with(\".\")?keep_after_last(\".\")}"
+  # Copy "groupId" as "package" -- it reads better in some cases.
+  - !<DefineVar>
+    name: "package"
+    value: "${groupId}"
+
+  - !<ProcessFreemarker>
+
+  - !<DefineVar>
+    name: "packagePath"
+    value: "${packageToPath(package)}"
+  - !<Move>
+    from: "site/src/site/*"
+    to: "site/src/jsMain/kotlin/${packagePath}"
+    description: "Copying frontend code"
+  - !<Move>
+    from: "site/src/api/*"
+    to: "site/src/jvmMain/kotlin/${packagePath}/api"
+    description: "Copying backend code"
+  - !<Move>
+    from: "site/resources/*"
+    to: "site/src/jsMain/resources"
+    description: "Copying resources"
