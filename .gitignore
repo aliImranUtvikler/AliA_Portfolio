@@ -1,3 +1,7 @@
 # Kobweb ignores
 .kobweb/*
 !.kobweb/conf.yaml
+
+# Gradle ignores
+build/
+.gradle/

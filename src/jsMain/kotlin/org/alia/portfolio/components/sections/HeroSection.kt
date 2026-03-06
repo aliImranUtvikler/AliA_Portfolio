@@ -11,6 +11,7 @@ import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.CssStyle
+import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.toModifier
 import org.jetbrains.compose.web.css.*
@@ -19,28 +20,42 @@ import org.jetbrains.compose.web.dom.Video
 import org.alia.portfolio.HeadlineTextStyle
 import org.alia.portfolio.SubheadlineTextStyle
 
-val HeroBackgroundStyle = CssStyle.base {
-    Modifier
-        .position(Position.Absolute)
-        .top(0.px)
-        .left(50.percent)
-        .width(100.vw)
-        .height(100.vh)
-        .zIndex(0) // Moved from -1 to 0 so it's above the PageLayout background
-        .styleModifier { 
-            property("transform", "translateX(-50%)")
-            property("overflow", "hidden") 
-        }
+val HeroContainerStyle = CssStyle {
+    base {
+        Modifier
+            .fillMaxWidth()
+            .height(70.vh)
+            .position(Position.Relative)
+            .margin(top = (-4).cssRem) // offset PageLayout padding
+    }
+    Breakpoint.MD {
+        Modifier.height(100.vh)
+    }
+}
+
+val HeroBackgroundStyle = CssStyle {
+    base {
+        Modifier
+            .position(Position.Absolute)
+            .top(0.px)
+            .left(50.percent)
+            .width(100.vw)
+            .height(70.vh)
+            .zIndex(0) // Moved from -1 to 0 so it's above the PageLayout background
+            .styleModifier { 
+                property("transform", "translateX(-50%)")
+                property("overflow", "hidden") 
+            }
+    }
+    Breakpoint.MD {
+        Modifier.height(100.vh)
+    }
 }
 
 @Composable
 fun HeroSection(videoUrl: String) {
     Box(
-        Modifier
-            .fillMaxWidth()
-            .height(100.vh)
-            .position(Position.Relative)
-            .margin(top = (-4).cssRem), // offset PageLayout padding
+        HeroContainerStyle.toModifier(),
         contentAlignment = Alignment.Center
     ) {
         // Video Background
