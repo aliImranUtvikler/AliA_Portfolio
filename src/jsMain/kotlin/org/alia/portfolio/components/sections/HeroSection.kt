@@ -24,7 +24,7 @@ val HeroContainerStyle = CssStyle {
     base {
         Modifier
             .fillMaxWidth()
-            .height(70.vh)
+            .height(65.vh)
             .position(Position.Relative)
             .margin(top = (-4).cssRem) // offset PageLayout padding
     }
@@ -40,7 +40,7 @@ val HeroBackgroundStyle = CssStyle {
             .top(0.px)
             .left(50.percent)
             .width(100.vw)
-            .height(70.vh)
+            .height(60.vh)
             .zIndex(0) // Moved from -1 to 0 so it's above the PageLayout background
             .styleModifier { 
                 property("transform", "translateX(-50%)")
