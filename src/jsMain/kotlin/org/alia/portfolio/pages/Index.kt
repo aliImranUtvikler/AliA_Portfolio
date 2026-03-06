@@ -26,7 +26,7 @@ fun HomePage() {
     Column(Modifier.fillMaxWidth().gap(4.cssRem)) {
         // Here we'd link to the actual background video.
         // For demonstration purposes, we use a placeholder or empty string.
-        HeroSection(videoUrl = "hero_test.mp4")
+        HeroSection(videoUrl = "hero.mp4")
 
         // Body Of Work Grid will be inserted here
         BodyOfWorkSection()
