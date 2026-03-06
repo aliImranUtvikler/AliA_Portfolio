@@ -32,7 +32,8 @@ jobs:
 
       - name: Download Kobweb CLI
         run: |
-          wget https://github.com/varabyte/kobweb/releases/latest/download/kobweb.zip
+          LATEST_URL=$(curl -s https://api.github.com/repos/varabyte/kobweb-cli/releases/latest | grep browser_download_url | grep "\.zip" | cut -d '"' -f 4)
+          wget $LATEST_URL -O kobweb.zip
           unzip kobweb.zip
           # Finding the extracted folder name which looks like kobweb-x.y.z
           KOBWEB_DIR=$(find . -maxdepth 1 -type d -name "kobweb-*" | head -n 1)
