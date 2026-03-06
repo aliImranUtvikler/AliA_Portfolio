@@ -38,7 +38,7 @@ fun Footer(modifier: Modifier = Modifier) {
             Row(Modifier.gap(2.cssRem).padding(bottom = 1.cssRem)) {
                 Link("/", "Hovedsiden", variant = UndecoratedLinkVariant.then(UncoloredLinkVariant))
                 Link("/about", "Om", variant = UndecoratedLinkVariant.then(UncoloredLinkVariant))
-                Link("mailto:contact@example.com", "Kontakt", variant = UndecoratedLinkVariant.then(UncoloredLinkVariant))
+                Link("mailto:imran.jobb@gmail.com", "Kontakt", variant = UndecoratedLinkVariant.then(UncoloredLinkVariant))
             }
             SpanText("© 2026 AI Ali. Alle rettigheter forbeholdt.", Modifier.fontSize(0.8.cssRem).opacity(50.percent))
         }

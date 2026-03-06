@@ -1,5 +1,6 @@
 site:
   title: "${projectTitle}"
+  routePrefix: "/AliA_Portfolio"
 
 server:
   files:

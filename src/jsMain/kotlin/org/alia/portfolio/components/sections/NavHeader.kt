@@ -56,8 +56,7 @@ fun NavHeader() {
         Spacer()
 
         Row(Modifier.gap(2.cssRem), verticalAlignment = Alignment.CenterVertically) {
-            NavLink("mailto:contact@example.com", "KONTAKT")
-            ColorModeButton()
+            NavLink("mailto:imran.jobb@gmail.com", "KONTAKT")
         }
     }
 }
