@@ -32,7 +32,7 @@ val defaultProjects = listOf(
         id = "revira-promo",
         title = "Demo video for Revira",
         subtitle = "Oppdrag",
-        pitch = "Revira AS leverer naturlig avskrekkingsmiddel for skadedyr, og hadde behov for en tydelig måte å forklare påføringsprosessen av middelet på. Jeg utviklet en skreddersydd 9:16 instruksjonsvideo hvor alt fra det visuelle universet til fortellerstemmen er skapt med KI. Resultatet er en moderne video som bryter ned komplekse instrukser til noe som er lett å forstå.",
+        pitch = "Revira AS leverer naturlig avskrekkingsmiddel for skadedyr, og hadde behov for en tydelig måte å forklare påføringsprosessen av middelet på. Jeg utviklet en instruksjonsvideo hvor alt fra det visuelle universet til fortellerstemmen er skapt med KI. Resultatet er en moderne video som bryter ned komplekse instrukser til noe som er lett å forstå.",
         company = "Revira AS",
         tools = "Midjourney, Kling AI, CapCut, Canva, ElevenLabs",
         method = "Inkrementell (Smidig)",
@@ -40,7 +40,7 @@ val defaultProjects = listOf(
         heroVideoUrl = "/video/projects/Revira_P_small.mp4",
         heroVideoPosterUrl = "/video/projects/Revira_P_small-Cover.jpg",
         processImage = "/images/projects/revira-sand-process.png",
-processDescription = "Arbeidsprosessen var bygget opp rundt en smidig og inkrementell metode. Det visuelle grunnlaget ble generert i Midjourney, før bildene ble gitt liv og flytende bevegelser ved hjelp av Kling AI. For å sikre en profesjonell og pedagogisk tone, ble fortellerstemmen syntetisert i ElevenLabs. Til slutt ble alle elementene satt sammen, klippet og optimalisert med teksting i CapCut og Canva for å sikre maksimal effekt på mobile flater."    ),
+processDescription = "Arbeidsprosessen var bygget opp rundt en smidig og inkrementell metode. Det visuelle grunnlaget ble generert i Midjourney, før bildene ble gitt liv og flytende bevegelser ved hjelp av Kling AI. For å sikre en profesjonell og pedagogisk tone, ble fortellerstemmen syntetisert i ElevenLabs. Til slutt ble alle elementene satt sammen, klippet og optimalisert med teksting i CapCut og Canva for å sikre maksimal effekt på mobile flater."),
     Project(
         id = "real-karamel",
         title = "Real Karamel",
