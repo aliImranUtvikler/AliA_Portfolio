@@ -28,6 +28,7 @@ import org.jetbrains.compose.web.css.vh
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.dom.Video
+import org.jetbrains.compose.web.dom.Iframe
 import org.jetbrains.compose.web.dom.Hr
 import org.alia.portfolio.components.layouts.PageLayoutData
 import org.alia.portfolio.components.sections.defaultProjects
@@ -79,20 +80,35 @@ fun ProjectPage() {
                 // Video (Settes til grid-area "video")
                 if (project.heroVideoUrl != null) {
                     Box(Modifier.fillMaxWidth().styleModifier { property("grid-area", "video") }) {
-                        Video(
-                            attrs = {
-                                attr("src", project.heroVideoUrl)
-                                attr("controls", "") // Viser avspillingskontroller
-                                val posterUrl = project.heroVideoPosterUrl ?: project.coverImage
-                                attr("poster", posterUrl)
-                                style {
-                                    property("width", "100%")
-                                    property("max-height", "80vh") // Begrenser høyden for mobil
-                                    property("object-fit", "contain") // Beholder originalt sideforhold
-                                    property("border-radius", "0.5rem")
+                        if (project.heroVideoUrl.contains("tiktok.com")) {
+                            val videoId = project.heroVideoUrl.substringAfterLast("/")
+                            Iframe(
+                                attrs = {
+                                    attr("src", "https://www.tiktok.com/embed/v2/$videoId")
+                                    style {
+                                        property("width", "100%")
+                                        property("height", "80vh") // Begrenser høyden for mobil
+                                        property("border", "none")
+                                        property("border-radius", "0.5rem")
+                                    }
                                 }
-                            }
-                        )
+                            )
+                        } else {
+                            Video(
+                                attrs = {
+                                    attr("src", project.heroVideoUrl)
+                                    attr("controls", "") // Viser avspillingskontroller
+                                    val posterUrl = project.heroVideoPosterUrl ?: project.coverImage
+                                    attr("poster", posterUrl)
+                                    style {
+                                        property("width", "100%")
+                                        property("max-height", "80vh") // Begrenser høyden for mobil
+                                        property("object-fit", "contain") // Beholder originalt sideforhold
+                                        property("border-radius", "0.5rem")
+                                    }
+                                }
+                            )
+                        }
                     }
                 } else {
                     // Fallback hvis video mangler

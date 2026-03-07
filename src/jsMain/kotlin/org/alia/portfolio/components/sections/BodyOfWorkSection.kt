@@ -30,7 +30,7 @@ val BodyOfWorkGridStyle = CssStyle.base {
 val defaultProjects = listOf(
     Project(
         id = "revira-promo",
-        title = "Instruksjonsvideo for Revira",
+        title = "Demo video for Revira",
         subtitle = "Oppdrag",
         pitch = "Revira AS leverer naturlig avskrekkingsmiddel for skadedyr, og hadde behov for en tydelig måte å forklare påføringsprosessen av middelet på. Jeg utviklet en skreddersydd 9:16 instruksjonsvideo hvor alt fra det visuelle universet til fortellerstemmen er skapt med KI. Resultatet er en moderne video som bryter ned komplekse instrukser til noe som er lett å forstå.",
         company = "Revira AS",
@@ -42,15 +42,17 @@ val defaultProjects = listOf(
         processImage = "/images/projects/revira-sand-process.png",
 processDescription = "Arbeidsprosessen var bygget opp rundt en smidig og inkrementell metode. Det visuelle grunnlaget ble generert i Midjourney, før bildene ble gitt liv og flytende bevegelser ved hjelp av Kling AI. For å sikre en profesjonell og pedagogisk tone, ble fortellerstemmen syntetisert i ElevenLabs. Til slutt ble alle elementene satt sammen, klippet og optimalisert med teksting i CapCut og Canva for å sikre maksimal effekt på mobile flater."    ),
     Project(
-        id = "lys-refleksjon",
-        title = "Lys Refleksjon",
-        subtitle = "Visuell Film",
-        pitch = "En dynamisk reise i lys og skygge.",
-        company = "Film Collective",
-        tools = "Stable Diffusion",
-        method = "Eksperimentell",
-        coverImage = "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=600&q=80",
-        heroVideoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"
+        id = "real-karamel",
+        title = "Real Karamel",
+        subtitle = "KI-generert DJ og Influencer",
+        pitch = "Real Karamel er en 100 % KI-generert DJ-artist som har tatt TikTok og Spotify med storm under profilen mjevo_production. Målet var å bygge en virtuell influencer fra bunnen av med en unik musikalsk og visuell identitet. Casen har vært en massiv viral suksess med over 22 millioner visninger, 108 000+ følgere og 1,2 millioner likerklikk, og konseptet genererer i dag faktiske inntekter. Dette prosjektet demonstrerer kraften i konsekvent, KI-drevet merkevarebygging.",
+        company = "Eget prosjekt (mjevo_production)",
+        tools = "Kling AI, Suno, CapCut",
+        method = "Karakterdesign & Tekst-til-Video",
+        coverImage = "/images/projects/karamel-cover.png", 
+        heroVideoUrl = "https://www.tiktok.com/@mjevo_production/video/7463472292215934230",
+        processImage = "/images/projects/karamel-process.png",
+        processDescription = "Nøkkelen til suksessen bak Real Karamel ligger i et systematisk arbeid med å opprettholde visuell kontinuitet. Jeg utviklet en dyptgående karakterprofil med faste attributter for alder, klesstil og personlighet for å sikre at hun ser lik ut hver gang. Ved å bruke detaljerte prompter og ren 'Tekst-til-Video'-funksjonalitet oppnådde jeg maksimal kontroll over karakterens bevegelser. Musikken ble skapt med Suno, før alt ble satt sammen, klippet og optimalisert for TikTok-formatet i CapCut."
     ),
     Project(
         id = "skygge-dybde",
@@ -58,16 +60,6 @@ processDescription = "Arbeidsprosessen var bygget opp rundt en smidig og inkreme
         subtitle = "Minimalistisk",
         pitch = "Utforskning av fravær av farge.",
         company = "Studio Minimal",
-        tools = "Runway Gen-2",
-        method = "Iterativ",
-        coverImage = "https://images.unsplash.com/photo-1507502707541-f369a3b18502?auto=format&fit=crop&w=600&q=80"
-    ),
-    Project(
-        id = "katten-svinger",
-        title = "Katten Svinger på tur",
-        subtitle = "Kort, slående tekst som beskriver sluttproduktet du har levert, hva målet var, og verdien det skapte.",
-        pitch = "Utforskning av fravær av farge.",
-        company = "AliA",
         tools = "Runway Gen-2",
         method = "Iterativ",
         coverImage = "https://images.unsplash.com/photo-1507502707541-f369a3b18502?auto=format&fit=crop&w=600&q=80"
