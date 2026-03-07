@@ -18,8 +18,9 @@ import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.components.graphics.Image
-import com.varabyte.kobweb.silk.components.layout.SimpleGrid
-import com.varabyte.kobweb.silk.components.layout.numColumns
+import com.varabyte.kobweb.silk.style.CssStyle
+import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
+import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.toModifier
 import com.varabyte.kobweb.compose.css.ObjectFit
 import org.jetbrains.compose.web.css.cssRem
@@ -31,6 +32,27 @@ import org.jetbrains.compose.web.dom.Hr
 import org.alia.portfolio.components.layouts.PageLayoutData
 import org.alia.portfolio.components.sections.defaultProjects
 import org.alia.portfolio.HeadlineTextStyle
+
+val ProjectGridStyle = CssStyle {
+    base {
+        Modifier
+            .fillMaxWidth()
+            .styleModifier {
+                property("display", "grid")
+                property("gap", "2rem")
+                property("grid-template-columns", "minmax(0, 1fr)")
+                property("grid-template-areas", "\"title\" \"pitch\" \"video\" \"meta\"")
+            }
+    }
+    Breakpoint.MD {
+        Modifier
+            .styleModifier {
+                property("gap", "4rem")
+                property("grid-template-columns", "minmax(0, 1fr) minmax(0, 1fr)")
+                property("grid-template-areas", "\"video title\" \"video pitch\" \"video meta\"")
+            }
+    }
+}
 
 @InitRoute
 fun initProjectPage(ctx: InitRouteContext) {
@@ -51,12 +73,12 @@ fun ProjectPage() {
                 SpanText("Prosjektet ble ikke funnet.")
             }
         } else {
-            // Hovedseksjon (Video til venstre, Informasjon til høyre)
-            SimpleGrid(numColumns(1, md = 2), Modifier.fillMaxWidth().gap(4.cssRem)) {
+            // Hovedseksjon (Mobil: CSS Grid ordner rekkefølgen automatisk! Desktop: Venstre/høyre)
+            Div(ProjectGridStyle.toModifier().toAttrs()) {
                 
-                // Venstre kolonne: Video
+                // Video (Settes til grid-area "video")
                 if (project.heroVideoUrl != null) {
-                    Box(Modifier.fillMaxWidth()) {
+                    Box(Modifier.fillMaxWidth().styleModifier { property("grid-area", "video") }) {
                         Video(
                             attrs = {
                                 attr("src", project.heroVideoUrl)
@@ -74,53 +96,57 @@ fun ProjectPage() {
                     // Fallback hvis video mangler
                     Image(
                         src = project.coverImage,
-                        modifier = Modifier.fillMaxWidth().styleModifier { property("border-radius", "0.5rem") }
+                        modifier = Modifier.fillMaxWidth()
+                            .styleModifier { 
+                                property("border-radius", "0.5rem") 
+                                property("grid-area", "video")
+                            }
                     )
                 }
 
-                // Høyre kolonne: Tittel og Info
-                Column(Modifier.gap(2.cssRem).fillMaxWidth()) {
+                // Titler (grid-area "title")
+                Column(Modifier.gap(0.5.cssRem).fillMaxWidth().styleModifier { property("grid-area", "title") }) {
+                    Div(Modifier.fontSize(3.cssRem).fontWeight(FontWeight.Bold).color(Colors.White).toAttrs()) {
+                        Text(project.title)
+                    }
+                    Div(Modifier.fontSize(1.2.cssRem).color(Colors.Gray).toAttrs()) {
+                        Text(project.subtitle)
+                    }
+                }
+
+                // Om sluttproduktet (Pitch) (grid-area "pitch")
+                Div(Modifier.fontSize(1.1.cssRem).lineHeight(1.6).color(Colors.White).fillMaxWidth().styleModifier { property("grid-area", "pitch") }.toAttrs()) {
+                    Text(project.pitch)
+                }
+
+                // Metainfo-boks (grid-area "meta")
+                Column(Modifier.fillMaxWidth().gap(1.cssRem).styleModifier { property("grid-area", "meta") }) {
+                    Hr(Modifier.fillMaxWidth().color(Colors.DarkGray).toAttrs())
                     
-                    // Titler
                     Column(Modifier.gap(0.5.cssRem)) {
-                        Div(Modifier.fontSize(3.cssRem).fontWeight(FontWeight.Bold).color(Colors.White).toAttrs()) {
-                            Text(project.title)
-                        }
-                        Div(Modifier.fontSize(1.2.cssRem).color(Colors.Gray).toAttrs()) {
-                            Text(project.subtitle)
-                        }
-                    }
-
-                    // Om sluttproduktet (Pitch)
-                    Div(Modifier.fontSize(1.1.cssRem).lineHeight(1.6).color(Colors.White).toAttrs()) {
-                        Text(project.pitch)
-                    }
-
-                    // Metainfo-boks
-                    Column(Modifier.fillMaxWidth().margin(top = 2.cssRem).gap(1.cssRem)) {
-                        Hr(Modifier.fillMaxWidth().color(Colors.DarkGray).toAttrs())
-                        
-                        Column(Modifier.gap(0.5.cssRem)) {
                             MetaLine("SELSKAP", project.company)
                             MetaLine("VERKTØY", project.tools)
                             MetaLine("METODE", project.method)
                         }
                         
-                        Hr(Modifier.fillMaxWidth().color(Colors.DarkGray).toAttrs())
-                    }
+                    Hr(Modifier.fillMaxWidth().color(Colors.DarkGray).toAttrs())
                 }
             }
 
-            // "Bak kulissene" seksjon
+            // "Fra produksjonen" seksjon
             if (project.processImage != null || project.processDescription != null) {
-                Column(Modifier.fillMaxWidth().gap(2.cssRem)) {
+                Column(Modifier.fillMaxWidth().gap(1.cssRem)) {
                     
-                    // Seksjonstittel
+                    // Seksjonstittel med mindre luft
                     Div(Modifier.fontSize(2.cssRem).fontWeight(FontWeight.Bold).color(Colors.White).toAttrs()) {
-                        Text("Bak kulissene / Fra produksjonen")
+                        Text("Fra produksjonen")
                     }
 
-                    SimpleGrid(numColumns(1, md = 2), Modifier.fillMaxWidth().gap(4.cssRem)) {
+                    // Vi bruker standard CSS Grid her også for stabilitet
+                    Div(Modifier.fillMaxWidth().gap(2.cssRem).styleModifier {
+                        property("display", "grid")
+                        property("grid-template-columns", "repeat(auto-fit, minmax(300px, 1fr))")
+                    }.toAttrs()) {
                         
                         // Venstre: Bredt bilde
                         if (project.processImage != null) {
@@ -157,7 +183,7 @@ fun ProjectPage() {
 @Composable
 private fun MetaLine(label: String, value: String) {
     Row(Modifier.fillMaxWidth().gap(1.cssRem)) {
-        Div(Modifier.width(6.cssRem).fontWeight(FontWeight.Bold).color(Colors.Gray).fontSize(0.9.cssRem).toAttrs()) {
+        Div(Modifier.minWidth(7.cssRem).fontWeight(FontWeight.Bold).color(Colors.Gray).fontSize(0.9.cssRem).toAttrs()) {
             Text("$label:")
         }
         Div(Modifier.color(Colors.White).fontSize(0.9.cssRem).toAttrs()) {
