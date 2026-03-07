@@ -108,7 +108,10 @@ fun ProjectPage() {
 
                 // Titler (grid-area "title")
                 Column(Modifier.gap(0.5.cssRem).fillMaxWidth().styleModifier { property("grid-area", "title") }) {
-                    Div(Modifier.fontSize(3.cssRem).fontWeight(FontWeight.Bold).color(Colors.White).toAttrs()) {
+                    Div(Modifier.fontSize(2.5.cssRem).fontWeight(FontWeight.Bold).color(Colors.White).styleModifier { 
+                        property("overflow-wrap", "break-word")
+                        property("word-break", "break-word")
+                    }.toAttrs()) {
                         Text(project.title)
                     }
                     Div(Modifier.fontSize(1.2.cssRem).color(Colors.Gray).toAttrs()) {
