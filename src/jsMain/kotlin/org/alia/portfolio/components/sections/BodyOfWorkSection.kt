@@ -28,9 +28,40 @@ val BodyOfWorkGridStyle = CssStyle.base {
 
 // Default mock projects for layout demonstration
 val defaultProjects = listOf(
-    Project(id = "mork-materie", title = "Mørk Materie", description = "Abstrakt KI", coverImage = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80"),
-    Project(id = "lys-refleksjon", title = "Lys Refleksjon", description = "Visuell film", coverImage = "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=600&q=80"),
-    Project(id = "skygge-dybde", title = "Skygge Dybde", description = "Minimalistisk", coverImage = "https://images.unsplash.com/photo-1507502707541-f369a3b18502?auto=format&fit=crop&w=600&q=80")
+    Project(
+        id = "mork-materie",
+        title = "Mørk Materie",
+        subtitle = "Abstrakt",
+        pitch = "Kort, slående tekst som beskriver sluttproduktet du har levert, hva målet var, og verdien det skapte.",
+        company = "Tech AS",
+        tools = "Midjourney, Kling AI, Premiere Pro",
+        method = "Inkrementell (Smidig)",
+        coverImage = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+        heroVideoUrl = "https://www.w3schools.com/html/mov_bbb.mp4", // Mock video
+        processImage = "https://images.unsplash.com/photo-1622737133809-d95047b9e673?auto=format&fit=crop&w=1200&q=80",
+        processDescription = "Her har vi plass til horisontale (16:9) bilder fra produksjonen, skjermbilder av prosessen, eller et innblikk i hvordan du jobbet frem resultatet."
+    ),
+    Project(
+        id = "lys-refleksjon",
+        title = "Lys Refleksjon",
+        subtitle = "Visuell Film",
+        pitch = "En dynamisk reise i lys og skygge.",
+        company = "Film Collective",
+        tools = "Stable Diffusion",
+        method = "Eksperimentell",
+        coverImage = "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=600&q=80",
+        heroVideoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"
+    ),
+    Project(
+        id = "skygge-dybde",
+        title = "Skygge Dybde",
+        subtitle = "Minimalistisk",
+        pitch = "Utforskning av fravær av farge.",
+        company = "Studio Minimal",
+        tools = "Runway Gen-2",
+        method = "Iterativ",
+        coverImage = "https://images.unsplash.com/photo-1507502707541-f369a3b18502?auto=format&fit=crop&w=600&q=80"
+    )
 )
 
 @Composable

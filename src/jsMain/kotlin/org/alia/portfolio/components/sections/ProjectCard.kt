@@ -58,9 +58,14 @@ fun ProjectCard(project: Project) {
                     .objectFit(ObjectFit.Cover)
             )
 
-            // Title
-            Div(Modifier.fontSize(1.2.cssRem).fontWeight(FontWeight.SemiBold).toAttrs()) {
-                Text(project.title)
+            // Title & Subtitle
+            Column(Modifier.gap(0.2.cssRem)) {
+                Div(Modifier.fontSize(1.2.cssRem).fontWeight(FontWeight.SemiBold).toAttrs()) {
+                    Text(project.title)
+                }
+                Div(Modifier.fontSize(0.9.cssRem).color(Colors.Gray).toAttrs()) {
+                    Text(project.subtitle)
+                }
             }
         }
     }

@@ -3,7 +3,13 @@ package org.alia.portfolio.models
 data class Project(
     val id: String,
     val title: String,
-    val description: String,
+    val subtitle: String,
+    val pitch: String,
+    val company: String,
+    val tools: String,
+    val method: String,
     val coverImage: String,
-    val mediaUrls: List<String> = emptyList()
+    val heroVideoUrl: String? = null,
+    val processImage: String? = null,
+    val processDescription: String? = null
 )

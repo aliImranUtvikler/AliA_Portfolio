@@ -42,25 +42,33 @@ Dette dokumentet beskriver systemarkitekturen, teknologivalgene og den visuelle 
 ### 1.2 Prosjektsiden (Gjenbrukbar Underside)
 ```text
 +-------------------------------------------------------------+
-| [< TILBAKE]                                                 |
+| [LOGO / NAVN]                                    [KONTAKT] |
+|                                                             |
 |=============================================================|
 |                                                             |
-|                  [ STOR PROSJEKTTITTEL ]                    |
+|   +---------------+   [ Prosjekttittel, f.eks. "Mørk Materie" ]
+|   |               |   [ Undertittel / Kategori, f.eks. "Abstrakt" ]
+|   |               |
+|   |               |   [ Om sluttproduktet ]
+|   |   [ VIDEO ]   |   Her kommer en kort, slående tekst som 
+|   |   [ HER ]     |   beskriver sluttproduktet du har levert, 
+|   |               |   hva målet var, og verdien det skapte.
+|   |               |   ---------------------------------------------
+|   |               |   SELSKAP: Tech AS
+|   |               |   VERKTØY: Midjourney, Kling AI, Premiere Pro
+|   |               |   METODE:  Inkrementell (Smidig)
+|   +---------------+   ---------------------------------------------
 |                                                             |
-|   +-----------------------------------------------------+   |
-|   |                                                     |   |
-|   |             Hovedmedia (Video / Bilde)              |   |
-|   |                                                     |   |
-|   +-----------------------------------------------------+   |
+|=============================================================|
 |                                                             |
-|   [ PROSJEKTBESKRIVELSE ]                                   |
-|   "Kort, minimalistisk tekst med grå typografi mot          |
-|    svart/hvit bakgrunn. Dette forklarer valgene og          |
-|    historien bak KI-genereringen."                          |
+|   [ Bak kulissene / Fra produksjonen ]                      |
 |                                                             |
-|   +-------------------+  +-------------------+              |
-|   | Tilleggsbilde 1   |  | Tilleggsbilde 2   |              |
-|   +-------------------+  +-------------------+              |
+|   +-----------------------+   Slik ble det til:             |
+|   |                       |   Her har vi plass til          |
+|   |     [ BREDT BILDE     |   horisontale bilder, prosess,  |
+|   |     FRA PRODUKSJON ]  |   eller innblikk i hvordan      |
+|   |                       |   resultatet ble fremstilt.     |
+|   +-----------------------+                                 |
 |                                                             |
 +-------------------------------------------------------------+
 ```
@@ -102,7 +110,7 @@ Løsningen bygges med modulære og gjenbrukbare komponenter i Kotlin:
 * Koding av `BodyOfWork` CSS-grid (`grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))`) som lar prosjekter flyte på plass automatisk uten at formatet brytes.
 
 ### Fase 3: Detaljsider og Datamodell
-* Definere Kotlin `data class Project(val id: String, val title: String, val coverImage: String, val details: String, val mediaUrls: List<String>)`.
+* Definere Kotlin `data class Project(val id: String, val title: String, val subtitle: String, val pitch: String, val company: String, val tools: String, val method: String, val coverImage: String, val heroVideoUrl: String?, val processImage: String?, val processDescription: String?)`.
 * Generere undersider i Kobweb basert på dynamiske routing-parametere / side-maler.
 * Linke hver boks i `ProjectCard` til riktig underside.
 
