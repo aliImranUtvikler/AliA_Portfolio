@@ -55,14 +55,17 @@ processDescription = "Arbeidsprosessen var bygget opp rundt en smidig og inkreme
         processDescription = "Nøkkelen til suksessen bak Real Karamel ligger i et systematisk arbeid med å opprettholde visuell kontinuitet. Jeg utviklet en dyptgående karakterprofil med faste attributter for alder, klesstil og personlighet for å sikre at hun ser lik ut hver gang. Ved å bruke detaljerte prompter og ren 'Tekst-til-Video'-funksjonalitet oppnådde jeg maksimal kontroll over karakterens bevegelser. Musikken ble skapt med Suno, før alt ble satt sammen, klippet og optimalisert for TikTok-formatet i CapCut."
     ),
     Project(
-        id = "skygge-dybde",
-        title = "Skygge Dybde",
-        subtitle = "Minimalistisk",
-        pitch = "Utforskning av fravær av farge.",
-        company = "Studio Minimal",
-        tools = "Runway Gen-2",
-        method = "Iterativ",
-        coverImage = "https://images.unsplash.com/photo-1507502707541-f369a3b18502?auto=format&fit=crop&w=600&q=80"
+        id = "reborn-rebel",
+        title = "Promosjonsvideo for Reborn Rebel",
+        subtitle = "Mote & KI",
+        pitch = "Denne promosjonsvideoen kombinerer virkelighet med KI, hvor Reborn Rebels motto er implementert som en rød tråd gjennom hele filmen. Resultatet er en visuell opplevelse preget av mystikk og røffhet, pakket inn i en urban stil som er skreddersydd for å treffe målgruppen midt i hjertet.",
+        company = "Reborn Rebel",
+        tools = "Midjourney, Kling AI, CapCut",
+        method = "Referanse-KI & Bilde-til-Video",
+        coverImage = "/images/projects/Reborn_P_hero-Cover.jpg",
+        heroVideoUrl = "/video/projects/RebornRebel_P_hero.mp4",
+        processImage = "/images/projects/reborn-prosess.png",
+        processDescription = "For å oppnå den sømløse blandingen av virkelighet og KI, ble ekte fotografier av plaggene brukt som direkte referanser (Image-to-Image). Dette gjorde det mulig å beholde klærnes autentiske tekstur og detaljer på virtuelle modeller i det urbane landskapet. Stillbildene ble deretter animert med bilde-til-video-teknologi og klippet dynamisk i CapCut."
     )
 )
 
