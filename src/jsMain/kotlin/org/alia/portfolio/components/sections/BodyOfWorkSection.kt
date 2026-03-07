@@ -62,10 +62,10 @@ processDescription = "Arbeidsprosessen var bygget opp rundt en smidig og inkreme
         company = "Reborn Rebel",
         tools = "Midjourney, Kling AI, CapCut",
         method = "Referanse-KI & Bilde-til-Video",
-        coverImage = "/images/projects/reborn-cover.jpg",
-        heroVideoUrl = "/video/projects/RebornRebel_P_hero.mp4",
+        coverImage = "/images/projects/reborn-cover.png",
+        heroVideoUrl = "/video/projects/Reborn_P_hero.mp4",
         heroVideoPosterUrl = "/video/projects/Reborn_P_hero-Cover.jpg",
-        processImage = "/images/projects/reborn-prosess.png",
+        processImage = "/images/projects/reborn-process.png",
         processDescription = "For å oppnå den sømløse blandingen av virkelighet og KI, ble ekte fotografier av plaggene brukt som direkte referanser (Image-to-Image). Dette gjorde det mulig å beholde klærnes autentiske tekstur og detaljer på virtuelle modeller i det urbane landskapet. Stillbildene ble deretter animert med bilde-til-video-teknologi og klippet dynamisk i CapCut."
     )
 )
