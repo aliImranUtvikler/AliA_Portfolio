@@ -29,18 +29,17 @@ val BodyOfWorkGridStyle = CssStyle.base {
 // Default mock projects for layout demonstration
 val defaultProjects = listOf(
     Project(
-        id = "mork-materie",
-        title = "Mørk Materie",
-        subtitle = "Abstrakt",
-        pitch = "Kort, slående tekst som beskriver sluttproduktet du har levert, hva målet var, og verdien det skapte.",
-        company = "Tech AS",
-        tools = "Midjourney, Kling AI, Premiere Pro",
+        id = "revira-promo",
+        title = "Instruksjonsvideo for Revira",
+        subtitle = "Oppdrag",
+        pitch = "Revira AS leverer naturlig avskrekkingsmiddel for skadedyr, og hadde behov for en tydelig måte å forklare påføringsprosessen av middelet på. Jeg utviklet en skreddersydd 9:16 instruksjonsvideo hvor alt fra det visuelle universet til fortellerstemmen er skapt med KI. Resultatet er en moderne video som bryter ned komplekse instrukser til noe som er lett å forstå.",
+        company = "Revira AS",
+        tools = "Midjourney, Kling AI, CapCut, Canva, ElevenLabs",
         method = "Inkrementell (Smidig)",
-        coverImage = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
-        heroVideoUrl = "https://www.w3schools.com/html/mov_bbb.mp4", // Mock video
-        processImage = "https://images.unsplash.com/photo-1622737133809-d95047b9e673?auto=format&fit=crop&w=1200&q=80",
-        processDescription = "Her har vi plass til horisontale (16:9) bilder fra produksjonen, skjermbilder av prosessen, eller et innblikk i hvordan du jobbet frem resultatet."
-    ),
+        coverImage = "/images/projects/revira-cover.png",
+        heroVideoUrl = "/video/projects/Revira_P_small.mp4",
+        processImage = "/images/projects/revira-sand-process.png",
+processDescription = "Arbeidsprosessen var bygget opp rundt en smidig og inkrementell metode. Det visuelle grunnlaget ble generert i Midjourney, før bildene ble gitt liv og flytende bevegelser ved hjelp av Kling AI. For å sikre en profesjonell og pedagogisk tone, ble fortellerstemmen syntetisert i ElevenLabs. Til slutt ble alle elementene satt sammen, klippet og optimalisert med teksting i CapCut og Canva for å sikre maksimal effekt på mobile flater."    ),
     Project(
         id = "lys-refleksjon",
         title = "Lys Refleksjon",
@@ -58,6 +57,16 @@ val defaultProjects = listOf(
         subtitle = "Minimalistisk",
         pitch = "Utforskning av fravær av farge.",
         company = "Studio Minimal",
+        tools = "Runway Gen-2",
+        method = "Iterativ",
+        coverImage = "https://images.unsplash.com/photo-1507502707541-f369a3b18502?auto=format&fit=crop&w=600&q=80"
+    ),
+    Project(
+        id = "katten-svinger",
+        title = "Katten Svinger på tur",
+        subtitle = "Kort, slående tekst som beskriver sluttproduktet du har levert, hva målet var, og verdien det skapte.",
+        pitch = "Utforskning av fravær av farge.",
+        company = "AliA",
         tools = "Runway Gen-2",
         method = "Iterativ",
         coverImage = "https://images.unsplash.com/photo-1507502707541-f369a3b18502?auto=format&fit=crop&w=600&q=80"
