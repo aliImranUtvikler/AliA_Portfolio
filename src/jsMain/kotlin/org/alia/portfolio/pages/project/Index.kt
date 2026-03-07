@@ -83,6 +83,8 @@ fun ProjectPage() {
                             attrs = {
                                 attr("src", project.heroVideoUrl)
                                 attr("controls", "") // Viser avspillingskontroller
+                                val posterUrl = project.heroVideoPosterUrl ?: project.coverImage
+                                attr("poster", posterUrl)
                                 style {
                                     property("width", "100%")
                                     property("max-height", "80vh") // Begrenser høyden for mobil

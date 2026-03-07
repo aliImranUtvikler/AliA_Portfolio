@@ -10,6 +10,7 @@ data class Project(
     val method: String,
     val coverImage: String,
     val heroVideoUrl: String? = null,
+    val heroVideoPosterUrl: String? = null,
     val processImage: String? = null,
     val processDescription: String? = null
 )

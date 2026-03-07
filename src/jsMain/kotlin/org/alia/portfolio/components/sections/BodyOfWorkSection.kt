@@ -38,6 +38,7 @@ val defaultProjects = listOf(
         method = "Inkrementell (Smidig)",
         coverImage = "/images/projects/revira-cover.png",
         heroVideoUrl = "/video/projects/Revira_P_small.mp4",
+        heroVideoPosterUrl = "/video/projects/Revira_P_small-Cover.jpg",
         processImage = "/images/projects/revira-sand-process.png",
 processDescription = "Arbeidsprosessen var bygget opp rundt en smidig og inkrementell metode. Det visuelle grunnlaget ble generert i Midjourney, før bildene ble gitt liv og flytende bevegelser ved hjelp av Kling AI. For å sikre en profesjonell og pedagogisk tone, ble fortellerstemmen syntetisert i ElevenLabs. Til slutt ble alle elementene satt sammen, klippet og optimalisert med teksting i CapCut og Canva for å sikre maksimal effekt på mobile flater."    ),
     Project(
