@@ -24,7 +24,7 @@ val HeroContainerStyle = CssStyle {
     base {
         Modifier
             .fillMaxWidth()
-            .height(65.vh)
+            .height(60.vh)
             .position(Position.Relative)
             .margin(top = (-4).cssRem) // offset PageLayout padding
     }

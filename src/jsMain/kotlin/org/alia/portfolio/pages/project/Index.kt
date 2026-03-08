@@ -40,7 +40,7 @@ val ProjectGridStyle = CssStyle {
             .fillMaxWidth()
             .styleModifier {
                 property("display", "grid")
-                property("gap", "2rem")
+                property("gap", "1.5rem")
                 property("grid-template-columns", "minmax(0, 1fr)")
                 property("grid-template-areas", "\"title\" \"pitch\" \"video\" \"meta\"")
             }
@@ -68,7 +68,7 @@ fun ProjectPage() {
     val projectId = ctx.route.params["id"]
     val project = defaultProjects.find { it.id == projectId }
 
-    Column(Modifier.fillMaxWidth().minHeight(100.vh).padding(top = 4.cssRem, bottom = 4.cssRem).gap(6.cssRem)) {
+    Column(Modifier.fillMaxWidth().minHeight(100.vh).padding(top = 2.cssRem, bottom = 4.cssRem).gap(3.cssRem)) {
         if (project == null) {
             Div(Modifier.fontSize(2.cssRem).color(Colors.White).toAttrs()) {
                 SpanText("Prosjektet ble ikke funnet.")

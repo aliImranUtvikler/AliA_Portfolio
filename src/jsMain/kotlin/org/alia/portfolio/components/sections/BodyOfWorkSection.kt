@@ -72,7 +72,7 @@ processDescription = "Arbeidsprosessen var bygget opp rundt en smidig og inkreme
 
 @Composable
 fun BodyOfWorkSection(projects: List<Project> = defaultProjects) {
-    Column(Modifier.fillMaxWidth().padding(top = 4.cssRem, bottom = 4.cssRem)) {
+    Column(Modifier.fillMaxWidth().padding(top = 2.cssRem, bottom = 4.cssRem)) {
         Div(HeadlineTextStyle.toModifier().margin(bottom = 2.cssRem).toAttrs()) {
             SpanText("Showcase")
         }
