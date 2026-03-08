@@ -91,10 +91,10 @@ fun HeroSection(videoUrl: String) {
                 .zIndex(1)
         ) {
             Div(HeadlineTextStyle.toModifier().styleModifier { property("text-align", "center") }.toAttrs()) {
-                SpanText("Visuell KI-Kreatør & Director")
+                SpanText("Visuell KI-Kreatør")
             }
             Div(SubheadlineTextStyle.toModifier().styleModifier { property("text-align", "center") }.color(Colors.White.copyf(alpha = 0.8f)).toAttrs()) {
-                SpanText("Utforsker grensesnittet mellom kunstig intelligens og film.")
+                SpanText("Skaper morgendagens visuelle opplevelser med KI.")
             }
         }
     }

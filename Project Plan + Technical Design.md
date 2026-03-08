@@ -18,7 +18,7 @@ Dette dokumentet beskriver systemarkitekturen, teknologivalgene og den visuelle 
 |                   [ HERO SEKSJON ]                          |
 |             (Fullskjerm Video Bakgrunn)                     |
 |                                                             |
-|           "Visuell KI-Kreatør & Director"                   |
+|           "Visuell KI-Kreatør"                   |
 |                                                             |
 |                                                             |
 |                                                             |
@@ -55,7 +55,7 @@ Dette dokumentet beskriver systemarkitekturen, teknologivalgene og den visuelle 
 |   |               |   hva målet var, og verdien det skapte.
 |   |               |   ---------------------------------------------
 |   |               |   SELSKAP: Tech AS
-|   |               |   VERKTØY: Midjourney, Kling AI, Premiere Pro
+|   |               |   VERKTØY: Nano Banana Pro, Kling AI, Premiere Pro
 |   |               |   METODE:  Inkrementell (Smidig)
 |   +---------------+   ---------------------------------------------
 |                                                             |
