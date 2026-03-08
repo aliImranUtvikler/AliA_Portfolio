@@ -30,7 +30,7 @@ val BodyOfWorkGridStyle = CssStyle.base {
 val defaultProjects = listOf(
     Project(
         id = "revira-promo",
-        title = "Demo video for Revira",
+        title = "Demo-video for Revira",
         subtitle = "Oppdrag",
         pitch = "Revira AS leverer naturlig avskrekkingsmiddel for skadedyr, og hadde behov for en tydelig måte å forklare påføringsprosessen av middelet på. Jeg utviklet en instruksjonsvideo hvor alt fra det visuelle universet til fortellerstemmen er skapt med KI. Resultatet er en moderne video som bryter ned komplekse instrukser til noe som er lett å forstå.",
         company = "Revira AS",
@@ -56,7 +56,7 @@ processDescription = "Arbeidsprosessen var bygget opp rundt en smidig og inkreme
     ),
     Project(
         id = "reborn-rebel",
-        title = "Promosjonsvideo for Reborn Rebel",
+        title = "Promo-video for Reborn Rebel",
         subtitle = "Mote & KI",
         pitch = "Denne promosjonsvideoen kombinerer virkelighet med KI, hvor Reborn Rebels motto er implementert som en rød tråd gjennom hele filmen. Resultatet er en visuell opplevelse preget av mystikk og røffhet, pakket inn i en urban stil som er skreddersydd for å treffe målgruppen midt i hjertet.",
         company = "Reborn Rebel",
