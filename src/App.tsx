@@ -112,7 +112,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-obsidian text-zinc-100 bg-blueprint-grid relative">
+    <div className="min-h-screen bg-obsidian text-zinc-100 bg-blueprint-grid relative overflow-x-hidden">
       {/* Interactive HTML5 Neural & Laser Grid Canvas */}
       <NeuralGridCanvas />
 
@@ -255,8 +255,8 @@ export function App() {
             </div>
 
             {/* Right: Showreel Video Viewport with HUD Brackets */}
-            <div className="lg:col-span-6 bg-surface relative flex flex-col justify-between">
-              <div className="relative aspect-video lg:aspect-auto lg:h-full min-h-[320px] bg-black overflow-hidden group">
+            <div className="lg:col-span-6 bg-surface relative flex flex-col justify-between overflow-hidden">
+              <div className="relative w-full aspect-video lg:aspect-auto lg:h-full lg:min-h-[360px] bg-black overflow-hidden group">
                 <video
                   src="hero.mp4"
                   autoPlay
@@ -268,7 +268,7 @@ export function App() {
                 {/* Floating Mute Button */}
                 <button
                   onClick={() => setIsHeroMuted(!isHeroMuted)}
-                  className="absolute top-4 right-4 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 border border-gridLine hover:border-copper bg-obsidian/85 backdrop-blur-md font-mono text-[11px] text-zinc-200 transition-colors"
+                  className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 border border-gridLine hover:border-copper bg-obsidian/85 backdrop-blur-md font-mono text-[10px] sm:text-[11px] text-zinc-200 transition-colors"
                 >
                   {isHeroMuted ? (
                     <>
@@ -283,10 +283,11 @@ export function App() {
                   )}
                 </button>
 
-                {/* Corner HUD Brackets inside video */}
-                <div className="pointer-events-none absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-copper/80" />
-                <div className="pointer-events-none absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-copper/80" />
-                <div className="pointer-events-none absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-copper/80" />
+                {/* Corner HUD Brackets inside video - all 4 corners */}
+                <div className="pointer-events-none absolute top-3 left-3 w-3.5 h-3.5 border-t-2 border-l-2 border-copper/80" />
+                <div className="pointer-events-none absolute top-3 right-3 w-3.5 h-3.5 border-t-2 border-r-2 border-copper/80" />
+                <div className="pointer-events-none absolute bottom-3 left-3 w-3.5 h-3.5 border-b-2 border-l-2 border-copper/80" />
+                <div className="pointer-events-none absolute bottom-3 right-3 w-3.5 h-3.5 border-b-2 border-r-2 border-copper/80" />
               </div>
             </div>
           </div>
