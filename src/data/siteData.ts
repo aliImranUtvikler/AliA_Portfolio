@@ -1,3 +1,10 @@
+export interface ProcessGalleryItem {
+  step: string;
+  label: string;
+  image: string;
+  caption: string;
+}
+
 export interface ProjectCase {
   id: string;
   indexCode: string;
@@ -14,6 +21,7 @@ export interface ProjectCase {
   heroVideoPosterUrl?: string;
   processImage?: string;
   processDescription?: string;
+  processGallery?: ProcessGalleryItem[];
   metrics: { label: string; value: string }[];
   workflowSteps: { step: string; title: string; detail: string }[];
 }
@@ -91,7 +99,7 @@ export const CONSULTING_SERVICES: ConsultingService[] = [
     title: 'KI-Implementering & Arbeidsflyt',
     tagline: 'Sett KI i system i din bedrift for å spare tid og kutte kostnader',
     description:
-      'Mange bedrifter tester KI på måfå uten å se effekt på bunnlinjen. Jeg kartlegger hvor dere mister mest tid i dag, velger ut de riktige KI-verktøyene og bygger faste, repeterbare produksjons-pipelines for teamet deres.',
+      'Jeg kartlegger hvor dere mister mest tid i dag, velger ut de riktige KI-verktøyene og bygger faste, repeterbare produksjons-pipelines for teamet deres.',
     roiHighlight: 'Kutter typisk produksjons- og leveringstid med 60–80 % innen 30 dager',
     deliverables: [
       'Kartlegging av flaskehalser i markeds- og innholdsproduksjon',
@@ -107,7 +115,7 @@ export const CONSULTING_SERVICES: ConsultingService[] = [
     title: 'Praktiske KI-Workshops for Team',
     tagline: 'Hands-on opplæring der teamet lærer håndverket bak profesjonell KI',
     description:
-      'Glem generelle introduksjonsforedrag om ChatGPT. I denne workshopen jobber vi direkte med bedriftens egne produkter og utfordringer, slik at teamet går ut av rommet med ferdigprodusert materiale og ny spisskompetanse.',
+      'I denne workshopen jobber vi direkte med bedriftens egne produkter og utfordringer, slik at teamet går ut av rommet med ferdigprodusert materiale og ny spisskompetanse.',
     roiHighlight: 'Teamet lærer metodene som skiller «billig AI-støy» fra kommersiell kvalitet',
     deliverables: [
       'Halvdags eller heldags praktisk workshop (fysisk eller digitalt)',
@@ -139,23 +147,23 @@ export const PIPELINE_SCENARIOS: PipelineScenario[] = [
   {
     id: 'ecommerce-fashion',
     code: 'PIPE // 01',
-    name: 'Produktfoto til Kampanjevideo',
-    bottleneck: 'Tradisjonell fotoshoot og videoproduksjon på location koster 80 000–200 000 kr og tar uker å planlegge.',
-    traditionalCost: '3–5 uker leveringstid • Høye location- og modellkostnader',
-    aiAliResult: 'Autentisk produkt på virtuelle modeller i urbane miljøer på 48 timer',
-    timeSaved: '82% raskere time-to-market',
+    name: 'Lagerbilde til Reklamefilm',
+    bottleneck: 'Statiske produktbilder fra lagerrom selger dårlig, men location-shoot for hvert produkt er altfor dyrt.',
+    traditionalCost: '3–5 uker leveringstid • Dyre location-, transport- og fotografkostnader',
+    aiAliResult: 'Fysiske møbler og klær plassert sømløst i eksklusive miljøer og animert til reklamefilm',
+    timeSaved: '85% raskere time-to-market',
     inputs: [
-      { label: 'Råprodukt / Mobilbilde', sub: 'Enkelt bilde av fysisk plagg eller produkt' },
-      { label: 'Merkevare-identitet', sub: 'Motto, stemning og målgruppe-brief' },
+      { label: 'Lager-/Mobilbilder av produkt', sub: 'Enkle bilder av møbelet eller plagget fra ulike vinkler' },
+      { label: 'Miljø-referanse (Pinterest)', sub: 'Ønsket interiør, arkitektur eller stemning' },
     ],
     engineNodes: [
-      { tool: 'Nano Banana Pro', role: 'Image-to-Image Referanse', param: 'Låser autentisk stofftekstur & sømmer' },
-      { tool: 'Kling AI Engine', role: 'Bilde-til-Video Regi', param: 'Kamerabevegelse, lys & fysikk' },
-      { tool: 'CapCut / Mastering', role: 'Rytmisk Klipp & Sound', param: '9:16 & 16:9 multi-format eksport' },
+      { tool: 'Kling AI Asset Engine', role: '3D/Multi-vinkel Produkt-låsing', param: 'Bevarer eksakt treverk, form & detaljer' },
+      { tool: 'Scene Inpainting / Swap', role: 'Miljø-integrasjon', param: 'Erstatter møbler i referanserommet med kundens produkt' },
+      { tool: 'Kling Motion + CapCut', role: 'Filmatisk Bevegelse', param: 'Naturlig sollys, kameraføring & klipp' },
     ],
     outputs: [
-      { title: 'Ferdig Promo-film', metric: '100% tro mot fysisk produkt' },
-      { title: 'Gjenbrukbar Stil-mal', metric: 'Klar for neste kolleksjon på timer' },
+      { title: 'Ferdig Reklamefilm', metric: '100% tro mot fysisk produkt' },
+      { title: 'Skalerbar Katalog-Pipeline', metric: 'Nye miljøer uten å flytte møbelet' },
     ],
   },
   {
@@ -206,8 +214,69 @@ export const PIPELINE_SCENARIOS: PipelineScenario[] = [
 
 export const PROJECTS: ProjectCase[] = [
   {
-    id: 'revira-promo',
+    id: 'teakklinikken',
     indexCode: 'CASE // 01',
+    title: 'Reklamefilm for Teakklinikken',
+    subtitle: 'Møbeldesign & Interiør • Fra lagerbilde til drømmelocation',
+    categoryTag: 'Møbler & Interiør • Asset-Swap',
+    impactBadge: 'Fra lagerrom til eksklusivt loft',
+    pitch:
+      'Teakklinikken selger og restaurerer eksklusive skandinaviske vintage- og designmøbler. Utfordringen er at møblene vanligvis fotograferes oppstilt på et lagerrom – veldig statisk og langt unna miljøet de faktisk hører hjemme i. Basert på vanlige mobilbilder fra lageret bygget jeg en låst Kling AI-asset av spisebordet og stolene, fant en arkitektonisk drømmesetting via Pinterest, erstattet møblene i scenen med Teakklinikkens egne møbler og ga rommet filmatisk bevegelse.',
+    company: 'Teakklinikken (@teakklinikken)',
+    tools: ['Kling AI (Assets)', 'Nano Banana Pro', 'Pinterest Ref', 'CapCut'],
+    method: 'Multi-Vinkel Asset-Bygging & Miljø-Erstatning',
+    coverImage: 'images/projects/teakklinikken-cover.jpg',
+    heroVideoUrl: 'video/projects/TeakBordStol_p.mp4',
+    heroVideoPosterUrl: 'images/projects/teakklinikken-cover.jpg',
+    processImage: 'images/projects/teakklinikken-input-photos.png',
+    processDescription:
+      'Arbeidsflyten eliminerer behovet for å frakte tunge designmøbler ut på fotoshoot: Kunden sendte 14 raske mobilbilder av spisebordet og stolene fra lageret på Instagram DM. Bildene ble samlet til en gjenbrukbar 3D-konsistent Asset i Kling AI. Deretter hentet vi en interiør-referanse fra Pinterest, byttet ut bordet og stolene i bildet med Teakklinikkens faktiske sett, og animerte lys og kamerabevegelse til en ferdig reklamefilm.',
+    processGallery: [
+      {
+        step: '01 // INPUT FRA LAGER',
+        label: '14 statiske lagerbilder på DM',
+        image: 'images/projects/teakklinikken-input-photos.png',
+        caption: 'Slik ser møblene vanligvis ut: Tatt raskt på lageret mot en hvit vegg.',
+      },
+      {
+        step: '02 // PINTEREST SETTING',
+        label: 'Valgt drømmelocation',
+        image: 'images/projects/teakklinikken-pinterest-ref.png',
+        caption: 'Inspirasjonsbildet fra Pinterest der de originale møblene ble fjernet og erstattet med Teakklinikkens asset.',
+      },
+      {
+        step: '03 // FERDIG FILM & REAKSJON',
+        label: '«Den er kaos»',
+        image: 'images/projects/teakklinikken-result-dm.png',
+        caption: 'Møblene plassert i det nye rommet med filmatisk lys og bevegelse – levert rett på DM.',
+      },
+    ],
+    metrics: [
+      { label: 'Transport & Leie av studio', value: '0 kr (100% virtuell plassering)' },
+      { label: 'Input fra kunde', value: 'Kun vanlige mobilbilder fra lager' },
+      { label: 'Kundereaksjon', value: '«Den er kaos!»' },
+    ],
+    workflowSteps: [
+      {
+        step: '01',
+        title: 'Mobilbilder → Kling AI Asset',
+        detail: 'Trente inn spisebordet og Y-stolene fra 14 lagerbilder slik at proporsjoner og treverk ble låst.',
+      },
+      {
+        step: '02',
+        title: 'Pinterest-Setting & Møbel-Swap',
+        detail: 'Fant riktig interiør-stemning på Pinterest og erstattet møblene i bildet med Teakklinikkens egne møbler.',
+      },
+      {
+        step: '03',
+        title: 'Filmatisk Regi & Historiefortelling',
+        detail: 'Ga scenen liv, dybde og kamerabevegelse som løfter et statisk bruktmøbel til en eksklusiv reklamefilm.',
+      },
+    ],
+  },
+  {
+    id: 'revira-promo',
+    indexCode: 'CASE // 02',
     title: 'Demo-video for Revira',
     subtitle: 'Kommersiell Instruksjonsfilm • B2B / Retail',
     categoryTag: 'Kundeoppdrag • Forklaringsvideo',
@@ -217,10 +286,10 @@ export const PROJECTS: ProjectCase[] = [
     company: 'Revira AS',
     tools: ['Nano Banana Pro', 'Kling AI', 'ElevenLabs', 'CapCut', 'Canva'],
     method: 'Inkrementell (Smidig) KI-Pipeline',
-    coverImage: '/images/projects/revira-cover.png',
-    heroVideoUrl: '/video/projects/Revira_P_small.mp4',
-    heroVideoPosterUrl: '/video/projects/Revira_P_small-Cover.jpg',
-    processImage: '/images/projects/revira-sand-process.png',
+    coverImage: 'images/projects/revira-cover.png',
+    heroVideoUrl: 'video/projects/Revira_P_small.mp4',
+    heroVideoPosterUrl: 'video/projects/Revira_P_small-Cover.jpg',
+    processImage: 'images/projects/revira-sand-process.png',
     processDescription:
       'Arbeidsprosessen var bygget opp rundt en smidig og inkrementell metode. Det visuelle grunnlaget ble generert med nøye kontrollerte bildemodeller, før bildene ble gitt liv og flytende bevegelser ved hjelp av Kling AI. For å sikre en profesjonell og pedagogisk tone, ble fortellerstemmen syntetisert i ElevenLabs. Til slutt ble alle elementene satt sammen, klippet og optimalisert med teksting i CapCut og Canva for å sikre maksimal effekt på mobile flater.',
     metrics: [
@@ -248,7 +317,7 @@ export const PROJECTS: ProjectCase[] = [
   },
   {
     id: 'real-karamel',
-    indexCode: 'CASE // 02',
+    indexCode: 'CASE // 03',
     title: 'Real Karamel',
     subtitle: 'KI-generert DJ, Artist & Virtuell Influencer',
     categoryTag: 'Merkevarebygging • 22M+ Visninger',
@@ -258,9 +327,9 @@ export const PROJECTS: ProjectCase[] = [
     company: 'Eget prosjekt (mjevo_production)',
     tools: ['Nano Banana Pro', 'Kling AI', 'Suno', 'CapCut'],
     method: 'Karakterdesign & Tekst-til-Video Kontinuitet',
-    coverImage: '/images/projects/karamel-cover.png',
+    coverImage: 'images/projects/karamel-cover.png',
     heroVideoUrl: 'https://www.tiktok.com/@mjevo_production/video/7463472292215934230',
-    processImage: '/images/projects/karamel-process.png',
+    processImage: 'images/projects/karamel-process.png',
     processDescription:
       'Nøkkelen til suksessen bak Real Karamel ligger i et systematisk arbeid med å opprettholde visuell kontinuitet. Jeg utviklet en dyptgående karakterprofil med faste attributter for alder, klesstil og personlighet for å sikre at hun ser lik ut hver gang. Ved å bruke detaljerte prompter og ren Tekst-til-Video-funksjonalitet oppnådde jeg maksimal kontroll over karakterens bevegelser. Musikken ble skapt med Suno, før alt ble satt sammen, klippet og optimalisert for TikTok-formatet i CapCut.',
     metrics: [
@@ -288,7 +357,7 @@ export const PROJECTS: ProjectCase[] = [
   },
   {
     id: 'reborn-rebel',
-    indexCode: 'CASE // 03',
+    indexCode: 'CASE // 04',
     title: 'Promo-video for Reborn Rebel',
     subtitle: 'Mote, E-handel & Produkt-KI',
     categoryTag: 'Kundeoppdrag • Mote & Produkt',
@@ -298,10 +367,10 @@ export const PROJECTS: ProjectCase[] = [
     company: 'Reborn Rebel',
     tools: ['Nano Banana Pro', 'Kling AI', 'CapCut'],
     method: 'Referanse-KI (Image-to-Image) & Bilde-til-Video',
-    coverImage: '/images/projects/reborn-cover.png',
-    heroVideoUrl: '/video/projects/Reborn_P_hero.mp4',
-    heroVideoPosterUrl: '/video/projects/Reborn_P_hero-Cover.jpg',
-    processImage: '/images/projects/reborn-process.png',
+    coverImage: 'images/projects/reborn-cover.png',
+    heroVideoUrl: 'video/projects/Reborn_P_hero.mp4',
+    heroVideoPosterUrl: 'video/projects/Reborn_P_hero-Cover.jpg',
+    processImage: 'images/projects/reborn-process.png',
     processDescription:
       'For å oppnå den sømløse blandingen av virkelighet og KI, ble ekte fotografier av plaggene brukt som direkte referanser (Image-to-Image). Dette gjorde det mulig å beholde klærnes autentiske tekstur, passform og detaljer på virtuelle modeller i det urbane landskapet. Stillbildene ble deretter animert med bilde-til-video-teknologi og klippet dynamisk i CapCut.',
     metrics: [
@@ -331,76 +400,59 @@ export const PROJECTS: ProjectCase[] = [
 
 export const VLOG_EPISODES: VlogEpisode[] = [
   {
-    id: 'vlog-01-karamel',
+    id: 'vlog-01-teakklinikken',
     episodeCode: 'VLOG // EP.01',
+    title: 'Fra kjedelig lagerbilde til eksklusiv reklamefilm (Teakklinikken Case)',
+    status: 'PLANLAGT',
+    duration: '05:30',
+    thumbnail: 'images/projects/teakklinikken-cover.jpg',
+    hook: 'Hvordan ta 14 vanlige mobilbilder fra et lagerrom og plassere møblene i en drømmelocation fra Pinterest ved hjelp av Kling Assets.',
+    businessProblem:
+      'Møbel- og interiørbutikker har fantastiske produkter, men tar bilder på trange lagre fordi location-shoots er for dyrt.',
+    toolsCovered: ['Kling AI Assets', 'Pinterest Ref', 'CapCut'],
+    recipeSteps: [
+      'Be kunden sende 10–14 mobilbilder av møbelet fra ulike vinkler og bygg en Kling Asset.',
+      'Finn drømmerommet på Pinterest og bytt ut møblene i bildet med kundens Kling Asset.',
+      'Animer kamerabevegelse og sollys for en ferdig reklamefilm.',
+    ],
+    takeaway: 'En arbeidsflyt enhver møbel- eller produktbedrift kan bruke for å løfte katalogen sin 10x.',
+  },
+  {
+    id: 'vlog-02-karamel',
+    episodeCode: 'VLOG // EP.02',
     title: 'Slik bygget jeg en 100 % KI-artist som fikk 22 millioner visninger',
     status: 'PLANLAGT',
     duration: '06:45',
-    thumbnail: '/images/projects/karamel-process.png',
+    thumbnail: 'images/projects/karamel-process.png',
     hook: 'De fleste som prøver å lage KI-video får et nytt ansikt hver gang de trykker generer. Her viser jeg det eksakte systemet bak Real Karamel.',
     businessProblem:
       'Hvordan skape visuell kontinuitet og bygge en gjenkjennelig merkevare med generativ KI uten at uttrykket spriker.',
     toolsCovered: ['Nano Banana Pro', 'Kling AI', 'Suno', 'Prompt-Arkitektur'],
     recipeSteps: [
-      'Bygg et fast «Karakter-anker» med låste beskrivelser av ansiktstrekk, lyssetting og kameravinkel.',
+      'Bygg et fast «Karakter-anker» med låste beskrivelser av ansiktstrekk og lys.',
       'Separer generering av grunnbilde (Image) og bevegelse (Motion) for full regi-kontroll.',
-      'Kombiner med skreddersydd lydspor og klipp på beat for å holde seerne gjennom de første 3 sekundene.',
+      'Kombiner med skreddersydd lydspor og klipp på beat.',
     ],
-    takeaway: 'Samme metodikk kan brukes av bedrifter for å skape faste digitale talspersoner eller gjennomgående kampanje-konsepter.',
+    takeaway: 'Samme metodikk kan brukes av bedrifter for å skape faste digitale talspersoner.',
   },
   {
-    id: 'vlog-02-reborn-produkter',
-    episodeCode: 'VLOG // EP.02',
-    title: 'Slik lager du reklamefilm med bedriftens EKTE produkter ved hjelp av KI',
+    id: 'vlog-03-reborn-produkter',
+    episodeCode: 'VLOG // EP.03',
+    title: 'Slik lager du reklamefilm med bedriftens EKTE klær ved hjelp av KI',
     status: 'PLANLAGT',
     duration: '07:20',
-    thumbnail: '/images/projects/reborn-process.png',
+    thumbnail: 'images/projects/reborn-process.png',
     hook: 'Den største feilen bedrifter gjør med KI er at produktet deres ser falskt ut. Slik låser du det fysiske produktet ditt inn i en KI-video.',
     businessProblem:
-      'Nettbutikker og merkevarer trenger nytt videomateriell hver uke, men har ikke budsjett til å leie filmteam og modeller for hvert produkt.',
+      'Nettbutikker og merkevarer trenger nytt videomateriell hver uke, men har ikke budsjett til å leie filmteam for hvert plagg.',
     toolsCovered: ['Image-to-Image Referanse', 'Kling AI', 'CapCut'],
     recipeSteps: [
-      'Ta et rent referansebilde av det fysiske produktet i godt lys.',
-      'Bruk Image-to-Image låsing slik at sømmer, logo og tekstur bevares mens bakgrunn og modell genereres.',
+      'Ta et rent referansebilde av det fysiske plagget i godt lys.',
+      'Bruk Image-to-Image låsing slik at sømmer, logo og tekstur bevares.',
       'Animer scenen med subtile kamerabevegelser som fremhever materialkvaliteten.',
     ],
-    takeaway: 'Lar klesmerker og produktbedrifter teste 5x flere kreative konsepter på en brøkdel av tiden.',
-  },
-  {
-    id: 'vlog-03-revira-instruksjon',
-    episodeCode: 'VLOG // EP.03',
-    title: 'Fra tørr bruksanvisning til proff instruksjonsvideo på 48 timer',
-    status: 'PLANLAGT',
-    duration: '05:50',
-    thumbnail: '/images/projects/revira-sand-process.png',
-    hook: 'Ingen leser lange PDF-manualer lenger. Se hvordan jeg gjorde en teknisk brukerveiledning om til en engasjerende film for Revira AS.',
-    businessProblem:
-      'Komplekse produkter krever god opplæring. Tradisjonell produksjon av opplæringsvideoer er dyrt å oppdatere når produktet endres.',
-    toolsCovered: ['Kling AI', 'ElevenLabs', 'Nano Banana Pro', 'Canva'],
-    recipeSteps: [
-      'Bryt bruksanvisningen ned i 4–5 tydelige visuelle nøkkelscener (storyboard).',
-      'Generer konsistente nærbilder av produktet i riktig bruksmiljø.',
-      'Legg på naturlig norsk fortellerstemme i ElevenLabs – som enkelt kan oppdateres eller oversettes senere.',
-    ],
-    takeaway: 'Perfekt arbeidsflyt for B2B- og industribedrifter som vil digitalisere opplæring og kundestøtte.',
+    takeaway: 'Lar klesmerker og produktbedrifter teste 5x flere kreative konsepter.',
   },
 ];
 
-export const FAQ_ITEMS = [
-  {
-    q: 'Vi vet at vi bør bruke KI, men aner ikke hvor vi skal begynne. Hvordan starter vi?',
-    a: 'Vi starter alltid med en uforpliktende 20-minutters kartleggingssamtale. Der ser vi ikke på «hype», men på hva dere faktisk bruker tid og penger på i dag (f.eks. innholdsproduksjon, produktvideoer eller manuelle rutiner). Derfra foreslår jeg én konkret arbeidsflyt som gir raskest mulig gevinst.',
-  },
-  {
-    q: 'Kan KI virkelig bruke våre ekte fysiske produkter uten at de ser «AI-genererte» eller feil ut?',
-    a: 'Ja! Som vist i casene for Reborn Rebel og Revira bruker jeg referansebaserte arbeidsflyter (Image-to-Image og kontrollerte nøkkelbilder). Det betyr at selve produktet, teksturen og logoen deres forblir tro mot originalen, mens miljøet, modellen og kamerabevegelsen skapes rundt produktet.',
-  },
-  {
-    q: 'Lærer du bort hvordan vi gjør dette selv, eller produserer du for oss?',
-    a: 'Begge deler! Noen kunder ønsker at jeg leverer nøkkelferdige videoer og kampanjer. Andre leier meg inn som konsulent for å sette opp verktøyene, bygge malene og trene opp deres eget markeds- eller innholdsteam slik at de blir selvgående.',
-  },
-  {
-    q: 'Hva med kommersielle bruksrettigheter på det som produseres?',
-    a: 'Vi setter opp og bruker profesjonelle, kommersielt lisensierte utgaver av verktøyene i arbeidsflyten, slik at bedriften din har trygge kommersielle rettigheter til å bruke materialet i annonser, på nettsider og i sosiale medier.',
-  },
-];
+export const FAQ_ITEMS = [];

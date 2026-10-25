@@ -51,13 +51,13 @@ const MINIMAL_SERVICES = [
 ];
 
 const MARQUEE_ITEMS = [
-  'KLING AI ENGINE',
+  'KLING AI ASSETS',
   '22M+ ORGANISKE VISNINGER',
   'NANO BANANA PRO',
   'KI-IMPLEMENTERING',
   'ELEVENLABS VOICE',
   '80% RASKERE PRODUKSJON',
-  'IMAGE-TO-VIDEO PIPELINES',
+  'LAGERBILDE TIL REKLAMEFILM',
   'SUNO AUDIO',
   'WORKSHOPS & RÅDGIVNING',
 ];
@@ -294,7 +294,7 @@ export function App() {
 
               <div className="relative aspect-video lg:aspect-auto lg:h-[380px] bg-black overflow-hidden group">
                 <video
-                  src="/hero.mp4"
+                  src="hero.mp4"
                   autoPlay
                   loop
                   playsInline
@@ -344,9 +344,9 @@ export function App() {
           <div className="grid grid-cols-2 lg:grid-cols-4">
             {[
               { code: '01', target: 22, suffix: 'M+', label: 'Visninger med KI' },
-              { code: '02', target: 80, suffix: '%', label: 'Raskere produksjon' },
+              { code: '02', target: 85, suffix: '%', label: 'Raskere produksjon' },
               { code: '03', target: 108, suffix: 'K+', label: 'Følgere bygget' },
-              { code: '04', target: 48, suffix: 't', label: 'Fra idé til leveranse' },
+              { code: '04', target: 4, suffix: ' Caser', label: 'Dokumenterte pipelines' },
             ].map((m) => (
               <SpotlightCard
                 key={m.code}
@@ -424,7 +424,7 @@ export function App() {
         {/* ======================== [02 // INTERACTIVE SVG NODE PIPELINE] ======================== */}
         <InteractivePipeline />
 
-        {/* ======================== [03 // VISUAL SHOWCASE WITH LIVE VIDEO PREVIEW] ======================== */}
+        {/* ======================== [03 // VISUAL SHOWCASE WITH LIVE VIDEO PREVIEW (2x2 GRID)] ======================== */}
         <section id="showcase" className="border-b border-gridLine">
           <SectionHeader
             indexCode="03"
@@ -433,8 +433,8 @@ export function App() {
             subtitle="Hold over eller trykk for video og prosess."
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-3">
-            {PROJECTS.map((project) => {
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            {PROJECTS.map((project, idx) => {
               const isHovered = hoveredProjectId === project.id;
               const hasLocalVideo =
                 project.heroVideoUrl && !project.heroVideoUrl.includes('tiktok.com');
@@ -444,10 +444,13 @@ export function App() {
                   key={project.id}
                   onMouseEnter={() => setHoveredProjectId(project.id)}
                   onMouseLeave={() => setHoveredProjectId(null)}
+                  className={`border-b border-gridLine ${
+                    idx % 2 === 0 ? 'md:border-r' : ''
+                  }`}
                 >
                   <SpotlightCard
                     onClick={() => openProject(project)}
-                    className="cursor-pointer group border-b last:border-b-0 lg:border-b-0 lg:border-r last:border-r-0 border-gridLine bg-obsidian flex flex-col justify-between h-full"
+                    className="cursor-pointer group bg-obsidian flex flex-col justify-between h-full"
                   >
                     {/* Visual Media Box with Live Video Hover */}
                     <div className="relative aspect-[16/10] overflow-hidden border-b border-gridLine bg-surface">

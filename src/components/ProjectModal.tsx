@@ -73,8 +73,10 @@ export const ProjectModal: React.FC<{
                       src={project.heroVideoUrl}
                       poster={project.heroVideoPosterUrl || project.coverImage}
                       controls
+                      autoPlay
+                      loop
                       playsInline
-                      className="w-full max-h-[56vh] sm:max-h-[72vh] object-contain border border-gridLine"
+                      className="w-full max-h-[58vh] sm:max-h-[72vh] object-contain border border-gridLine"
                     />
                   )
                 ) : (
@@ -184,36 +186,71 @@ export const ProjectModal: React.FC<{
             </div>
 
             {/* "Fra produksjonen — Slik ble det til" Section */}
-            {(project.processImage || project.processDescription) && (
+            {(project.processGallery || project.processImage || project.processDescription) && (
               <div className="p-5 sm:p-10 border-b border-gridLine bg-surface/40">
                 <div className="font-mono text-xs uppercase tracking-widest text-copper mb-1.5">
                   // BAK KULISSENE & PRODUKSJONSPROSESS
                 </div>
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-white mb-5">
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-white mb-4">
                   Fra produksjonen: Slik ble det til
                 </h3>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
-                  {project.processImage && (
-                    <div className="lg:col-span-7">
-                      <img
-                        src={project.processImage}
-                        alt={`Prosess for ${project.title}`}
-                        className="w-full rounded border border-gridLine object-cover"
-                      />
-                    </div>
-                  )}
-                  {project.processDescription && (
-                    <div className="lg:col-span-5 space-y-3">
-                      <div className="inline-block font-mono text-xs px-2.5 py-1 bg-zinc-900 border border-gridLine text-zinc-300">
-                        TEKNISK GJENNOMGANG
-                      </div>
-                      <p className="text-zinc-300 leading-relaxed text-sm sm:text-base">
+                {project.processGallery ? (
+                  <div className="space-y-5">
+                    {project.processDescription && (
+                      <p className="text-zinc-300 text-sm sm:text-base max-w-3xl leading-relaxed">
                         {project.processDescription}
                       </p>
+                    )}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {project.processGallery.map((item) => (
+                        <div
+                          key={item.step}
+                          className="border border-gridLine bg-obsidian flex flex-col justify-between overflow-hidden"
+                        >
+                          <div>
+                            <div className="px-3.5 py-2 border-b border-gridLine bg-surface flex items-center justify-between font-mono text-[10px]">
+                              <span className="text-copper font-bold">{item.step}</span>
+                              <span className="text-zinc-400">{item.label}</span>
+                            </div>
+                            <div className="aspect-[4/5] bg-black overflow-hidden">
+                              <img
+                                src={item.image}
+                                alt={item.label}
+                                className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                              />
+                            </div>
+                          </div>
+                          <div className="p-3.5 border-t border-gridLine text-xs text-zinc-300 leading-relaxed">
+                            {item.caption}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
+                    {project.processImage && (
+                      <div className="lg:col-span-7">
+                        <img
+                          src={project.processImage}
+                          alt={`Prosess for ${project.title}`}
+                          className="w-full rounded border border-gridLine object-cover"
+                        />
+                      </div>
+                    )}
+                    {project.processDescription && (
+                      <div className="lg:col-span-5 space-y-3">
+                        <div className="inline-block font-mono text-xs px-2.5 py-1 bg-zinc-900 border border-gridLine text-zinc-300">
+                          TEKNISK GJENNOMGANG
+                        </div>
+                        <p className="text-zinc-300 leading-relaxed text-sm sm:text-base">
+                          {project.processDescription}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
