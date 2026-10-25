@@ -46,47 +46,37 @@ export const AnimatedCounter: React.FC<{
   );
 };
 
+/**
+ * Single Header Principle (Zero Redundancy):
+ * One clear, self-explanatory heading with generous breathing room and a subtle animated accent line.
+ * No double-headers, no repetitive eyebrow boxes, no visual clutter.
+ */
 export const SectionHeader: React.FC<{
-  indexCode: string;
-  tag: string;
   title: string;
   subtitle?: string;
-  rightMeta?: string;
-}> = ({ indexCode, tag, title, subtitle, rightMeta = 'SYS.ONLINE' }) => {
+  action?: React.ReactNode;
+}> = ({ title, subtitle, action }) => {
   return (
-    <div className="relative border-b border-gridLine bg-surface/50 overflow-hidden">
-      {/* Animated horizontal copper scan beam at top of section */}
-      <motion.div
-        initial={{ x: '-100%' }}
-        whileInView={{ x: '200%' }}
-        viewport={{ once: false, amount: 0.4 }}
-        transition={{ duration: 2.6, ease: 'linear', repeat: Infinity, repeatDelay: 1.5 }}
-        className="pointer-events-none absolute top-0 left-0 h-[1.5px] w-1/3 bg-gradient-to-r from-transparent via-copper to-transparent"
-      />
-
-      {/* Top Blueprint Bar */}
-      <div className="flex items-center justify-between gap-2 border-b border-gridLine px-4 py-2 sm:px-8 font-mono text-[10px] sm:text-[11px] uppercase tracking-widest text-zinc-400">
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="inline-block h-2 w-2 shrink-0 rounded-full bg-copper animate-ping" />
-          <span className="text-copper font-semibold shrink-0">{indexCode}</span>
-          <span className="text-zinc-600 shrink-0">//</span>
-          <span className="truncate">{tag}</span>
+    <div className="mb-6 sm:mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <div className="flex items-center gap-3 mb-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-copper" />
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: 48 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="h-[1.5px] bg-gradient-to-r from-copper to-transparent"
+          />
         </div>
-        <div className="hidden sm:flex items-center gap-3 text-zinc-500 shrink-0">
-          <span>{rightMeta}</span>
-          <span className="text-copper">+</span>
-        </div>
-      </div>
-
-      {/* Minimalist Title Area */}
-      <div className="px-4 py-5 sm:px-8 sm:py-8 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
         <h2 className="font-display text-2xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
           {title}
         </h2>
         {subtitle && (
-          <p className="font-mono text-xs sm:text-sm text-zinc-400 max-w-md">{subtitle}</p>
+          <p className="mt-1.5 text-sm sm:text-base text-zinc-400 max-w-lg">{subtitle}</p>
         )}
       </div>
+      {action && <div className="shrink-0">{action}</div>}
     </div>
   );
 };
@@ -110,8 +100,8 @@ export const SpotlightCard: React.FC<{
     if (enableTilt && window.innerWidth >= 768) {
       const cx = rect.width / 2;
       const cy = rect.height / 2;
-      const rx = ((y - cy) / cy) * -3.5;
-      const ry = ((x - cx) / cx) * 3.5;
+      const rx = ((y - cy) / cy) * -3;
+      const ry = ((x - cx) / cx) * 3;
       setTilt({ rx, ry });
     }
   };
@@ -139,7 +129,7 @@ export const SpotlightCard: React.FC<{
         className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-0"
         style={{
           opacity: isHovered ? 1 : 0,
-          background: `radial-gradient(420px circle at ${coords.x}px ${coords.y}px, rgba(249, 115, 22, 0.19), transparent 50%)`,
+          background: `radial-gradient(420px circle at ${coords.x}px ${coords.y}px, rgba(249, 115, 22, 0.18), transparent 50%)`,
         }}
       />
       <div className="relative z-10 h-full">{children}</div>

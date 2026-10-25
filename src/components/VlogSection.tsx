@@ -8,26 +8,21 @@ export const VlogSection: React.FC = () => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   return (
-    <section id="vlog" className="relative border-b border-gridLine">
+    <section id="vlog" className="relative py-8 sm:py-10 px-4 sm:px-8 border-b border-gridLine">
       <SectionHeader
-        indexCode="04"
-        tag="YOUTUBE AI-VLOG & LAB"
         title="Fra maskinrommet."
-        subtitle="Korte video-gjennomganger og konkrete KI-oppskrifter."
-        rightMeta="VLOG // BUILD IN PUBLIC"
+        subtitle="Korte gjennomganger og 3-stegs oppskrifter fra mine faktiske arbeidsflyter."
       />
 
-      {/* Minimalist Visual Episode Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
         {VLOG_EPISODES.map((ep: VlogEpisode) => {
           const isExpanded = expandedId === ep.id;
           return (
             <SpotlightCard
               key={ep.id}
-              className="border-b last:border-b-0 lg:border-b-0 lg:border-r last:border-r-0 border-gridLine bg-obsidian flex flex-col justify-between"
+              className="border border-gridLine bg-obsidian/90 flex flex-col justify-between"
             >
               <div>
-                {/* Visual Thumbnail */}
                 <div className="relative aspect-video overflow-hidden border-b border-gridLine bg-surface group">
                   <img
                     src={ep.thumbnail}
@@ -36,10 +31,7 @@ export const VlogSection: React.FC = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent" />
 
-                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between font-mono text-[10px]">
-                    <span className="px-2 py-0.5 bg-obsidian/90 border border-gridLine text-copper font-semibold">
-                      {ep.episodeCode}
-                    </span>
+                  <div className="absolute top-3 right-3 font-mono text-[10px]">
                     <span className="px-2 py-0.5 bg-copper text-black font-bold">
                       {ep.duration}
                     </span>
@@ -56,27 +48,14 @@ export const VlogSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Minimal Title + Tool Chips */}
-                <div className="p-5">
-                  <div className="flex flex-wrap gap-1.5 mb-2.5">
-                    {ep.toolsCovered.map((tool) => (
-                      <span
-                        key={tool}
-                        className="font-mono text-[10px] px-2 py-0.5 bg-surface border border-gridLine text-zinc-400"
-                      >
-                        {tool}
-                      </span>
-                    ))}
-                  </div>
-
+                <div className="p-6 pb-4">
                   <h3 className="font-display text-lg font-bold text-white leading-snug">
                     {ep.title}
                   </h3>
                 </div>
               </div>
 
-              {/* Compact 1-Tap Recipe Drawer */}
-              <div className="px-5 pb-5">
+              <div className="px-6 pb-6">
                 <button
                   onClick={() => setExpandedId(isExpanded ? null : ep.id)}
                   className="w-full flex items-center justify-between border border-gridLine hover:border-copper/60 bg-surface px-3.5 py-2.5 font-mono text-[11px] text-zinc-300 transition-colors"

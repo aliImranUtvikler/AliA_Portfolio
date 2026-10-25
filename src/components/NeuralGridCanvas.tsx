@@ -20,23 +20,21 @@ export const NeuralGridCanvas: React.FC = () => {
     };
     window.addEventListener('resize', handleResize);
 
-    const mouse = { x: width * 0.65, y: height * 0.35, active: false };
+    const mouse = { x: width * 0.65, y: height * 0.35 };
     const handleMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
-      mouse.active = true;
     };
     const handleTouchMove = (e: TouchEvent) => {
       if (e.touches.length > 0) {
         mouse.x = e.touches[0].clientX;
         mouse.y = e.touches[0].clientY;
-        mouse.active = true;
       }
     };
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
-    const count = window.innerWidth < 768 ? 26 : 52;
+    const count = window.innerWidth < 768 ? 24 : 50;
     const nodes = Array.from({ length: count }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
@@ -46,14 +44,14 @@ export const NeuralGridCanvas: React.FC = () => {
       pulse: Math.random() * Math.PI * 2,
     }));
 
-    // Traveling data pulses along horizontal/vertical schematic grid lines
+    // Traveling data laser beams along horizontal/vertical schematic grid lines
     const gridStep = 64;
     const beams = Array.from({ length: 8 }, (_, i) => ({
       horizontal: i % 2 === 0,
       lineIndex: Math.floor(Math.random() * 16) + 1,
       pos: Math.random() * 1200,
-      speed: 2.2 + Math.random() * 2.5,
-      len: 90 + Math.random() * 80,
+      speed: 2.4 + Math.random() * 2.5,
+      len: 100 + Math.random() * 80,
     }));
 
     const render = () => {
@@ -70,7 +68,7 @@ export const NeuralGridCanvas: React.FC = () => {
           }
           const grad = ctx.createLinearGradient(b.pos - b.len, y, b.pos, y);
           grad.addColorStop(0, 'rgba(249, 115, 22, 0)');
-          grad.addColorStop(1, 'rgba(249, 115, 22, 0.55)');
+          grad.addColorStop(1, 'rgba(249, 115, 22, 0.6)');
           ctx.strokeStyle = grad;
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -85,7 +83,7 @@ export const NeuralGridCanvas: React.FC = () => {
           }
           const grad = ctx.createLinearGradient(x, b.pos - b.len, x, b.pos);
           grad.addColorStop(0, 'rgba(249, 115, 22, 0)');
-          grad.addColorStop(1, 'rgba(249, 115, 22, 0.55)');
+          grad.addColorStop(1, 'rgba(249, 115, 22, 0.6)');
           ctx.strokeStyle = grad;
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -105,7 +103,6 @@ export const NeuralGridCanvas: React.FC = () => {
         if (n.x < 0 || n.x > width) n.vx *= -1;
         if (n.y < 0 || n.y > height) n.vy *= -1;
 
-        // Connect to neighbor nodes
         for (let j = i + 1; j < nodes.length; j++) {
           const m = nodes[j];
           const dx = n.x - m.x;
@@ -115,6 +112,7 @@ export const NeuralGridCanvas: React.FC = () => {
             const alpha = (1 - dist / 140) * 0.22;
             ctx.strokeStyle = `rgba(249, 115, 22, ${alpha})`;
             ctx.lineWidth = 0.8;
+            ctx.moveTo(n.x, n.y);
             ctx.beginPath();
             ctx.moveTo(n.x, n.y);
             ctx.lineTo(m.x, m.y);
@@ -122,7 +120,6 @@ export const NeuralGridCanvas: React.FC = () => {
           }
         }
 
-        // Connect to mouse/touch cursor
         const mdx = n.x - mouse.x;
         const mdy = n.y - mouse.y;
         const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
@@ -136,7 +133,6 @@ export const NeuralGridCanvas: React.FC = () => {
           ctx.stroke();
         }
 
-        // Draw node dot
         const glowAlpha = 0.4 + Math.sin(n.pulse) * 0.25;
         ctx.fillStyle = `rgba(249, 115, 22, ${glowAlpha})`;
         ctx.beginPath();
@@ -160,7 +156,7 @@ export const NeuralGridCanvas: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-0 opacity-85"
+      className="pointer-events-none fixed inset-0 z-0 opacity-80"
       aria-hidden="true"
     />
   );
