@@ -1,7 +1,9 @@
-# Kobweb ignores
-.kobweb/*
-!.kobweb/conf.yaml
+node_modules
+dist
+dist-ssr
+*.local
+*.tsbuildinfo
+.DS_Store
+.env
+.env.*
 
-# Gradle ignores
-build/
-.gradle/
