@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Lyd-motor | Ambience Controller</title>
+  <style>
+    :root {
+      --bg: #0b0d12;
+      --card: #131720;
+      --border: #232a3b;
+      --text: #e5e7eb;
+      --muted: #8b95a7;
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.25);
+      --danger: #ef4444;
+      --warn: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .title-group h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .title-group p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-top: 0.25rem;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+
+    .status-badge.active {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+
+    .status-badge.active .status-dot {
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(1.15); }
+    }
+
+    .main-controls {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.25rem;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      color: var(--text);
+    }
+
+    .btn-primary {
+      flex: 1;
+      min-width: 180px;
+      background: var(--accent);
+      color: #04130d;
+      font-size: 1.02rem;
+      box-shadow: 0 4px 18px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-primary.running {
+      background: var(--danger);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(239, 68, 68, 0.25);
+    }
+
+    .btn-secondary {
+      background: #1e2433;
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #262e40;
+    }
+
+    .btn-sm {
+      padding: 0.45rem 0.75rem;
+      font-size: 0.8rem;
+      border-radius: 7px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .field label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .field input[type="number"],
+    .field select {
+      background: #0d1017;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.65rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .field input[type="number"]:focus,
+    .field select:focus {
+      border-color: var(--accent);
+    }
+
+    .field input[type="range"] {
+      accent-color: var(--accent);
+      width: 100%;
+      margin-top: 0.35rem;
+    }
+
+    .timer-box {
+      margin-top: 1.2rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #0d1017;
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .timer-value {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .timer-value.hidden-timer {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+    }
+
+    .sound-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .sound-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.65rem 0.85rem;
+      background: #0d1017;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      gap: 0.75rem;
+    }
+
+    .sound-item.playing {
+      border-color: var(--accent);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .sound-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+    }
+
+    .dropzone {
+      margin-top: 0.85rem;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 0.9rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.84rem;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--accent);
+      background: rgba(16, 185, 129, 0.05);
+      color: var(--text);
+    }
+
+    .log-list {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      max-height: 150px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      background: #0d1017;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .meta-pills {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    .pill {
+      background: #0d1017;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    .pill.ok {
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- TOP CARD: ENGINE & STATUS -->
+    <div class="card">
+      <div class="header">
+        <div class="title-group">
+          <h1>🔊 Bluetooth Lyd-Motor</h1>
+          <p>Holder høyttaleren våken i bakgrunnen og spiller av tilfeldige lyder.</p>
+        </div>
+        <div id="statusBadge" class="status-badge">
+          <span class="status-dot"></span>
+          <span id="statusText">Stoppet</span>
+        </div>
+      </div>
+
+      <div class="main-controls">
+        <button id="toggleBtn" class="btn-primary">▶ Start Lyd-motor</button>
+        <button id="testBtn" class="btn-secondary" title="Spill av en tilfeldig lyd med en gang">⚡ Test lyd nå</button>
+        <button id="stopSoundBtn" class="btn-secondary" style="display:none;">⏹ Stopp pågående lyd</button>
+      </div>
+
+      <div class="timer-box">
+        <div>
+          <div style="font-size: 0.8rem; color: var(--muted);">Neste tilfeldige avspilling:</div>
+          <div id="countdownDisplay" class="timer-value">--:--</div>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button id="rerollBtn" class="btn-secondary btn-sm" disabled>🎲 Trekk ny tid</button>
+          <button id="hideTimerBtn" class="btn-secondary btn-sm">👁️ Skjul nedtelling</button>
+        </div>
+      </div>
+
+      <div class="meta-pills">
+        <span id="btKeepAlivePill" class="pill">Bluetooth Keep-Alive: Inaktiv</span>
+        <span id="wakeLockPill" class="pill">Skjerm-lås (WakeLock): Inaktiv</span>
+        <span id="playedCountPill" class="pill">Avspilt i denne økten: 0</span>
+      </div>
+    </div>
+
+    <!-- SETTINGS CARD -->
+    <div class="card">
+      <div class="section-title">
+        <span>⚙️ Intervall & Volum</span>
+        <span style="font-size: 0.78rem; color: var(--muted); font-weight: 400;">Endringer trer i kraft umiddelbart</span>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="minTime">Minimum ventetid</label>
+          <input type="number" id="minTime" value="15" min="1" max="240" />
+        </div>
+        <div class="field">
+          <label for="maxTime">Maksimum ventetid</label>
+          <input type="number" id="maxTime" value="38" min="1" max="360" />
+        </div>
+        <div class="field">
+          <label for="timeUnit">Tidsenhet</label>
+          <select id="timeUnit">
+            <option value="minutes" selected>Minutter (Vanlig modus)</option>
+            <option value="seconds">Sekunder (Test-modus)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="volumeSlider">
+            <span>Volum / Boost</span>
+            <span id="volumeLabel">100%</span>
+          </label>
+          <input type="range" id="volumeSlider" min="10" max="200" step="5" value="100" />
+        </div>
+      </div>
+    </div>
+
+    <!-- SOUNDS LIST CARD -->
+    <div class="card">
+      <div class="section-title">
+        <span>🎵 Tilgjengelige lyder (<span id="soundCount">0</span>)</span>
+        <button id="refreshBtn" class="btn-secondary btn-sm">🔄 Sjekk etter nye filer</button>
+      </div>
+
+      <ul id="soundList" class="sound-list">
+        <li class="sound-item"><span class="sound-name">Laster inn lyder...</span></li>
+      </ul>
+
+      <div id="dropzone" class="dropzone">
+        📂 <strong>Slipp ekstra MP3/WAV-filer her</strong> eller klikk for å legge til direkte fra PC (uten å måtte pushe til GitHub)
+        <input type="file" id="fileInput" multiple accept="audio/*" style="display:none;" />
+      </div>
+    </div>
+
+    <!-- LOG CARD -->
+    <div class="card">
+      <div class="section-title">
+        <span>📜 Aktivitetslogg</span>
+        <button id="clearLogBtn" class="btn-secondary btn-sm">Tøm</button>
+      </div>
+      <div id="logList" class="log-list">
+        <div>Klar. Trykk "Start Lyd-motor" for å aktivere.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- STATE ---
+    let isRunning = false;
+    let sounds = []; // { name, url, source: 'repo' | 'local' }
+    let lastPlayedUrl = null;
+    let nextTriggerTimestamp = null;
+    let countdownInterval = null;
+    let manifestPollInterval = null;
+    let hideCountdown = false;
+    let playedCount = 0;
+
+    // Web Audio API & Keep-Alive nodes
+    let audioCtx = null;
+    let keepAliveOsc = null;
+    let keepAliveGain = null;
+    let silentHtmlAudio = null;
+    let activeAudioElement = null;
+    let activeGainNode = null;
+    let wakeLock = null;
+
+    // DOM Elements
+    const toggleBtn = document.getElementById('toggleBtn');
+    const testBtn = document.getElementById('testBtn');
+    const stopSoundBtn = document.getElementById('stopSoundBtn');
+    const rerollBtn = document.getElementById('rerollBtn');
+    const hideTimerBtn = document.getElementById('hideTimerBtn');
+    const statusBadge = document.getElementById('statusBadge');
+    const statusText = document.getElementById('statusText');
+    const countdownDisplay = document.getElementById('countdownDisplay');
+    const minTimeInput = document.getElementById('minTime');
+    const maxTimeInput = document.getElementById('maxTime');
+    const timeUnitSelect = document.getElementById('timeUnit');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeLabel = document.getElementById('volumeLabel');
+    const soundListEl = document.getElementById('soundList');
+    const soundCountEl = document.getElementById('soundCount');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const logList = document.getElementById('logList');
+    const clearLogBtn = document.getElementById('clearLogBtn');
+    const btKeepAlivePill = document.getElementById('btKeepAlivePill');
+    const wakeLockPill = document.getElementById('wakeLockPill');
+    const playedCountPill = document.getElementById('playedCountPill');
+
+    // --- LOGGING ---
+    function log(msg) {
+      const time = new Date().toLocaleTimeString('no-NO');
+      const div = document.createElement('div');
+      div.textContent = `[${time}] ${msg}`;
+      logList.prepend(div);
+    }
+
+    clearLogBtn.addEventListener('click', () => {
+      logList.innerHTML = '';
+    });
+
+    // --- LOAD MANIFEST FROM REPO ---
+    async function loadRepoSounds(silent = false) {
+      try {
+        const res = await fetch(`./sounds/manifest.json?t=${Date.now()}`, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const repoFiles = Array.isArray(data.files) ? data.files : [];
+
+        const localSounds = sounds.filter((s) => s.source === 'local');
+        const newRepoSounds = repoFiles.map((filename) => ({
+          name: filename,
+          url: `./sounds/${encodeURIComponent(filename)}`,
+          source: 'repo'
+        }));
+
+        const prevCount = sounds.filter((s) => s.source === 'repo').length;
+        sounds = [...newRepoSounds, ...localSounds];
+        renderSoundList();
+
+        if (!silent || newRepoSounds.length !== prevCount) {
+          log(`Lastet inn ${newRepoSounds.length} lyd(er) fra public/sounds/.`);
+        }
+      } catch (err) {
+        if (!silent) {
+          log(`Kunne ikke hente manifest.json (${err.message}). Du kan fortsatt slippe filer direkte her.`);
+        }
+      }
+    }
+
+    function renderSoundList(currentlyPlayingUrl = null) {
+      soundCountEl.textContent = sounds.length;
+      if (sounds.length === 0) {
+        soundListEl.innerHTML = `<li class="sound-item"><span class="sound-name" style="color:var(--muted)">Ingen lyder funnet enda. Legg MP3-filer i public/sounds/ eller slipp dem under!</span></li>`;
+        return;
+      }
+
+      soundListEl.innerHTML = '';
+      sounds.forEach((sound, idx) => {
+        const li = document.createElement('li');
+        li.className = 'sound-item' + (currentlyPlayingUrl === sound.url ? ' playing' : '');
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'sound-name';
+        nameSpan.textContent = sound.name;
+
+        const tagSpan = document.createElement('span');
+        tagSpan.className = 'tag';
+        tagSpan.textContent = sound.source === 'repo' ? 'GitHub' : 'Lokal';
+
+        const playBtn = document.createElement('button');
+        playBtn.className = 'btn-secondary btn-sm';
+        playBtn.textContent = '▶ Prøv';
+        playBtn.addEventListener('click', () => {
+          initAudioEngine();
+          playSound(sound);
+        });
+
+        li.appendChild(nameSpan);
+        li.appendChild(tagSpan);
+        li.appendChild(playBtn);
+        soundListEl.appendChild(li);
+      });
+    }
+
+    // --- BLUETOOTH & TAB KEEP-ALIVE ENGINE ---
+    function createSilentWavDataUri() {
+      // Generates a tiny 1-second 8kHz mono PCM WAV filled with near-zero signal so browser/OS media session stays active
+      const sampleRate = 8000;
+      const numSamples = sampleRate;
+      const buffer = new ArrayBuffer(44 + numSamples * 2);
+      const view = new DataView(buffer);
+
+      const writeString = (offset, str) => {
+        for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+      };
+
+      writeString(0, 'RIFF');
+      view.setUint32(4, 36 + numSamples * 2, true);
+      writeString(8, 'WAVE');
+      writeString(12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true); // PCM
+      view.setUint16(22, 1, true); // Mono
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * 2, true);
+      view.setUint16(32, 2, true);
+      view.setUint16(34, 16, true);
+      writeString(36, 'data');
+      view.setUint32(40, numSamples * 2, true);
+
+      // Fill with alternating +/- 1 LSB (completely inaudible -90dB dithering to prevent Bluetooth hardware auto-mute)
+      for (let i = 0; i < numSamples; i++) {
+        view.setInt16(44 + i * 2, i % 2 === 0 ? 1 : -1, true);
+      }
+
+      const bytes = new Uint8Array(buffer);
+      let binary = '';
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return 'data:audio/wav;base64,' + btoa(binary);
+    }
+
+    function initAudioEngine() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContextClass();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+
+      // 1. Sub-audible Web Audio oscillator (keeps DAC & Bluetooth link active)
+      if (!keepAliveOsc) {
+        keepAliveOsc = audioCtx.createOscillator();
+        keepAliveGain = audioCtx.createGain();
+        keepAliveOsc.type = 'sine';
+        keepAliveOsc.frequency.setValueAtTime(22, audioCtx.currentTime); // 22 Hz sub-bass
+        keepAliveGain.gain.setValueAtTime(0.0004, audioCtx.currentTime); // Effectively inaudible (-68 dB)
+        keepAliveOsc.connect(keepAliveGain);
+        keepAliveGain.connect(audioCtx.destination);
+        keepAliveOsc.start();
+      }
+
+      // 2. HTML5 looped audio element (prevents background tab throttling in Chrome/Edge)
+      if (!silentHtmlAudio) {
+        silentHtmlAudio = new Audio(createSilentWavDataUri());
+        silentHtmlAudio.loop = true;
+        silentHtmlAudio.volume = 0.01;
+      }
+      silentHtmlAudio.play().catch(() => {});
+
+      btKeepAlivePill.textContent = 'Bluetooth Keep-Alive: Aktiv ✓';
+      btKeepAlivePill.classList.add('ok');
+    }
+
+    function stopKeepAliveEngine() {
+      if (keepAliveOsc) {
+        try { keepAliveOsc.stop(); keepAliveOsc.disconnect(); } catch (e) {}
+        keepAliveOsc = null;
+      }
+      if (silentHtmlAudio) {
+        silentHtmlAudio.pause();
+      }
+      btKeepAlivePill.textContent = 'Bluetooth Keep-Alive: Inaktiv';
+      btKeepAlivePill.classList.remove('ok');
+    }
+
+    // --- SCREEN WAKE LOCK ---
+    async function requestWakeLock() {
+      if ('wakeLock' in navigator) {
+        try {
+          wakeLock = await navigator.wakeLock.request('screen');
+          wakeLockPill.textContent = 'Skjerm-lås (WakeLock): Aktiv ✓';
+          wakeLockPill.classList.add('ok');
+          wakeLock.addEventListener('release', () => {
+            wakeLockPill.textContent = 'Skjerm-lås (WakeLock): Inaktiv';
+            wakeLockPill.classList.remove('ok');
+          });
+        } catch (err) {
+          wakeLockPill.textContent = 'Skjerm-lås: Ikke støttet i bakgrunn';
+        }
+      }
+    }
+
+    async function releaseWakeLock() {
+      if (wakeLock) {
+        try { await wakeLock.release(); } catch (e) {}
+        wakeLock = null;
+      }
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && isRunning) {
+        requestWakeLock();
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      }
+    });
+
+    // --- PLAYBACK ---
+    function pickRandomSound() {
+      if (sounds.length === 0) return null;
+      if (sounds.length === 1) return sounds[0];
+      const candidates = sounds.filter((s) => s.url !== lastPlayedUrl);
+      const pool = candidates.length > 0 ? candidates : sounds;
+      const randomIndex = Math.floor(Math.random() * pool.length);
+      return pool[randomIndex];
+    }
+
+    function playSound(soundObj) {
+      if (!soundObj) {
+        log('Ingen lyder å spille av!');
+        return;
+      }
+
+      stopCurrentSound();
+      initAudioEngine();
+
+      const audio = new Audio(soundObj.url);
+      audio.crossOrigin = 'anonymous';
+      activeAudioElement = audio;
+      lastPlayedUrl = soundObj.url;
+
+      // Connect through Web Audio API GainNode so we support up to 200% volume boost
+      const volMultiplier = parseInt(volumeSlider.value, 10) / 100;
+      try {
+        const track = audioCtx.createMediaElementSource(audio);
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.value = volMultiplier;
+        track.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        activeGainNode = gainNode;
+      } catch (e) {
+        audio.volume = Math.min(1, volMultiplier);
+      }
+
+      stopSoundBtn.style.display = 'inline-flex';
+      renderSoundList(soundObj.url);
+
+      audio.play().then(() => {
+        playedCount++;
+        playedCountPill.textContent = `Avspilt i denne økten: ${playedCount}`;
+        log(`🔊 Spiller av: "${soundObj.name}" (Volum: ${volumeSlider.value}%)`);
+      }).catch((err) => {
+        log(`❌ Feil ved avspilling av "${soundObj.name}": ${err.message}`);
+      });
+
+      audio.addEventListener('ended', () => {
+        stopSoundBtn.style.display = 'none';
+        activeAudioElement = null;
+        renderSoundList(null);
+      });
+    }
+
+    function stopCurrentSound() {
+      if (activeAudioElement) {
+        activeAudioElement.pause();
+        activeAudioElement.currentTime = 0;
+        activeAudioElement = null;
+      }
+      stopSoundBtn.style.display = 'none';
+      renderSoundList(null);
+    }
+
+    // --- SCHEDULER ---
+    function scheduleNextSound() {
+      let minVal = parseFloat(minTimeInput.value) || 15;
+      let maxVal = parseFloat(maxTimeInput.value) || 38;
+      if (maxVal < minVal) {
+        maxVal = minVal;
+        maxTimeInput.value = maxVal;
+      }
+
+      const unitMultiplier = timeUnitSelect.value === 'seconds' ? 1000 : 60 * 1000;
+      const minMs = minVal * unitMultiplier;
+      const maxMs = maxVal * unitMultiplier;
+
+      // Uniformly random millisecond offset between minMs and maxMs
+      const randomDelayMs = Math.floor(minMs + Math.random() * (maxMs - minMs));
+      nextTriggerTimestamp = Date.now() + randomDelayMs;
+
+      const mins = Math.floor(randomDelayMs / 60000);
+      const secs = Math.round((randomDelayMs % 60000) / 1000);
+      log(`🎲 Neste lyd er planlagt om ${mins > 0 ? mins + ' min og ' : ''}${secs} sek.`);
+      updateCountdownUI();
+    }
+
+    function updateCountdownUI() {
+      if (!isRunning || !nextTriggerTimestamp) {
+        countdownDisplay.textContent = '--:--';
+        return;
+      }
+
+      const remainingMs = Math.max(0, nextTriggerTimestamp - Date.now());
+      if (hideCountdown) {
+        countdownDisplay.textContent = '🔒 Skjult (Kjører)';
+        countdownDisplay.classList.add('hidden-timer');
+        return;
+      }
+
+      countdownDisplay.classList.remove('hidden-timer');
+      const totalSeconds = Math.ceil(remainingMs / 1000);
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      countdownDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function tickScheduler() {
+      if (!isRunning) return;
+      const now = Date.now();
+      if (nextTriggerTimestamp && now >= nextTriggerTimestamp) {
+        // Refresh repo manifest quietly before picking, in case new files were pushed
+        loadRepoSounds(true).finally(() => {
+          const chosen = pickRandomSound();
+          playSound(chosen);
+          scheduleNextSound();
+        });
+      } else {
+        updateCountdownUI();
+      }
+    }
+
+    function startEngine() {
+      initAudioEngine();
+      requestWakeLock();
+      isRunning = true;
+
+      toggleBtn.textContent = '⏹ Stopp Lyd-motor';
+      toggleBtn.classList.add('running');
+      statusBadge.classList.add('active');
+      statusText.textContent = 'Kjører i bakgrunnen';
+      rerollBtn.disabled = false;
+
+      scheduleNextSound();
+      if (countdownInterval) clearInterval(countdownInterval);
+      countdownInterval = setInterval(tickScheduler, 500);
+
+      // Poll for newly pushed GitHub sounds every 3 minutes
+      if (manifestPollInterval) clearInterval(manifestPollInterval);
+      manifestPollInterval = setInterval(() => loadRepoSounds(true), 180 * 1000);
+
+      log('✅ Lyd-motor startet! Bluetooth holdes våken.');
+    }
+
+    function stopEngine() {
+      isRunning = false;
+      nextTriggerTimestamp = null;
+      if (countdownInterval) clearInterval(countdownInterval);
+      if (manifestPollInterval) clearInterval(manifestPollInterval);
+
+      stopCurrentSound();
+      stopKeepAliveEngine();
+      releaseWakeLock();
+
+      toggleBtn.textContent = '▶ Start Lyd-motor';
+      toggleBtn.classList.remove('running');
+      statusBadge.classList.remove('active');
+      statusText.textContent = 'Stoppet';
+      rerollBtn.disabled = true;
+      updateCountdownUI();
+
+      log('🛑 Lyd-motor stoppet.');
+    }
+
+    // --- EVENT LISTENERS ---
+    toggleBtn.addEventListener('click', () => {
+      if (isRunning) stopEngine();
+      else startEngine();
+    });
+
+    testBtn.addEventListener('click', () => {
+      initAudioEngine();
+      const sound = pickRandomSound();
+      playSound(sound);
+    });
+
+    stopSoundBtn.addEventListener('click', stopCurrentSound);
+
+    rerollBtn.addEventListener('click', () => {
+      if (isRunning) {
+        scheduleNextSound();
+      }
+    });
+
+    hideTimerBtn.addEventListener('click', () => {
+      hideCountdown = !hideCountdown;
+      hideTimerBtn.textContent = hideCountdown ? '👁️ Vis nedtelling' : '👁️ Skjul nedtelling';
+      updateCountdownUI();
+    });
+
+    [minTimeInput, maxTimeInput, timeUnitSelect].forEach((el) => {
+      el.addEventListener('change', () => {
+        if (isRunning) {
+          scheduleNextSound();
+        }
+      });
+    });
+
+    volumeSlider.addEventListener('input', () => {
+      volumeLabel.textContent = `${volumeSlider.value}%`;
+      if (activeGainNode && audioCtx) {
+        activeGainNode.gain.setValueAtTime(parseInt(volumeSlider.value, 10) / 100, audioCtx.currentTime);
+      }
+    });
+
+    refreshBtn.addEventListener('click', () => loadRepoSounds(false));
+
+    // Local Drag & Drop / File Picker
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      handleLocalFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', (e) => handleLocalFiles(e.target.files));
+
+    function handleLocalFiles(fileList) {
+      if (!fileList || fileList.length === 0) return;
+      let added = 0;
+      Array.from(fileList).forEach((file) => {
+        if (file.type.startsWith('audio/') || /\.(mp3|wav|ogg|m4a|aac|webm)$/i.test(file.name)) {
+          const blobUrl = URL.createObjectURL(file);
+          sounds.push({
+            name: file.name,
+            url: blobUrl,
+            source: 'local'
+          });
+          added++;
+        }
+      });
+      if (added > 0) {
+        renderSoundList();
+        log(`📂 La til ${added} lokal(e) lydfil(er) direkte i nettleseren.`);
+      }
+    }
+
+    // Initial load
+    loadRepoSounds(false);
+  </script>
+</body>
+</html>
