@@ -37,7 +37,7 @@
 
     .container {
       width: 100%;
-      max-width: 680px;
+      max-width: 720px;
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
@@ -160,10 +160,31 @@
       background: #262e40;
     }
 
+    .btn-danger-outline {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+
+    .btn-danger-outline:hover {
+      background: rgba(239, 68, 68, 0.22);
+    }
+
+    .btn-active-outline {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399;
+    }
+
+    .btn-active-outline:hover {
+      background: rgba(16, 185, 129, 0.22);
+    }
+
     .btn-sm {
-      padding: 0.45rem 0.75rem;
-      font-size: 0.8rem;
+      padding: 0.42rem 0.7rem;
+      font-size: 0.78rem;
       border-radius: 7px;
+      white-space: nowrap;
     }
 
     .grid-2 {
@@ -240,6 +261,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
       margin-bottom: 0.85rem;
     }
 
@@ -248,7 +271,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      max-height: 280px;
+      max-height: 340px;
       overflow-y: auto;
     }
 
@@ -260,8 +283,9 @@
       background: #0d1017;
       border: 1px solid var(--border);
       border-radius: 8px;
-      font-size: 0.88rem;
-      gap: 0.75rem;
+      font-size: 0.86rem;
+      gap: 0.6rem;
+      transition: opacity 0.15s ease, border-color 0.15s ease;
     }
 
     .sound-item.playing {
@@ -269,11 +293,27 @@
       background: rgba(16, 185, 129, 0.08);
     }
 
+    .sound-item.disabled-sound {
+      opacity: 0.48;
+      background: #090b10;
+    }
+
+    .sound-item.disabled-sound .sound-name {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
     .sound-name {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       flex: 1;
+    }
+
+    .sound-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
     }
 
     .tag {
@@ -356,8 +396,8 @@
 
       <div class="main-controls">
         <button id="toggleBtn" class="btn-primary">▶ Start Lyd-motor</button>
-        <button id="testBtn" class="btn-secondary" title="Spill av en tilfeldig lyd med en gang">⚡ Test lyd nå</button>
-        <button id="stopSoundBtn" class="btn-secondary" style="display:none;">⏹ Stopp pågående lyd</button>
+        <button id="testBtn" class="btn-secondary" title="Spill av en tilfeldig aktiv lyd med en gang">⚡ Test lyd nå</button>
+        <button id="stopSoundBtn" class="btn-danger-outline" style="display:none;">⏹ Stopp pågående lyd</button>
       </div>
 
       <div class="timer-box">
@@ -414,8 +454,12 @@
     <!-- SOUNDS LIST CARD -->
     <div class="card">
       <div class="section-title">
-        <span>🎵 Tilgjengelige lyder (<span id="soundCount">0</span>)</span>
-        <button id="refreshBtn" class="btn-secondary btn-sm">🔄 Sjekk etter nye filer</button>
+        <span>🎵 Tilgjengelige lyder (<span id="activeSoundCount">0</span> av <span id="soundCount">0</span> aktive)</span>
+        <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+          <button id="enableAllBtn" class="btn-secondary btn-sm">Aktiver alle</button>
+          <button id="disableAllBtn" class="btn-secondary btn-sm">Deaktiver alle</button>
+          <button id="refreshBtn" class="btn-secondary btn-sm">🔄 Sjekk nye filer</button>
+        </div>
       </div>
 
       <ul id="soundList" class="sound-list">
@@ -442,9 +486,13 @@
 
   <script>
     // --- STATE ---
+    const DISABLED_STORAGE_KEY = 'alia_disabled_sounds_v1';
+    let disabledSoundNames = new Set(JSON.parse(localStorage.getItem(DISABLED_STORAGE_KEY) || '[]'));
+
     let isRunning = false;
     let sounds = []; // { name, url, source: 'repo' | 'local' }
     let lastPlayedUrl = null;
+    let currentlyPlayingUrl = null;
     let nextTriggerTimestamp = null;
     let countdownInterval = null;
     let manifestPollInterval = null;
@@ -475,7 +523,10 @@
     const volumeSlider = document.getElementById('volumeSlider');
     const volumeLabel = document.getElementById('volumeLabel');
     const soundListEl = document.getElementById('soundList');
+    const activeSoundCountEl = document.getElementById('activeSoundCount');
     const soundCountEl = document.getElementById('soundCount');
+    const enableAllBtn = document.getElementById('enableAllBtn');
+    const disableAllBtn = document.getElementById('disableAllBtn');
     const refreshBtn = document.getElementById('refreshBtn');
     const dropzone = document.getElementById('dropzone');
     const fileInput = document.getElementById('fileInput');
@@ -484,6 +535,12 @@
     const btKeepAlivePill = document.getElementById('btKeepAlivePill');
     const wakeLockPill = document.getElementById('wakeLockPill');
     const playedCountPill = document.getElementById('playedCountPill');
+
+    function saveDisabledSounds() {
+      try {
+        localStorage.setItem(DISABLED_STORAGE_KEY, JSON.stringify(Array.from(disabledSoundNames)));
+      } catch (e) {}
+    }
 
     // --- LOGGING ---
     function log(msg) {
@@ -526,44 +583,109 @@
       }
     }
 
-    function renderSoundList(currentlyPlayingUrl = null) {
+    function getActiveSounds() {
+      return sounds.filter((s) => !disabledSoundNames.has(s.name));
+    }
+
+    function renderSoundList() {
+      const activeCount = getActiveSounds().length;
+      activeSoundCountEl.textContent = activeCount;
       soundCountEl.textContent = sounds.length;
+
       if (sounds.length === 0) {
         soundListEl.innerHTML = `<li class="sound-item"><span class="sound-name" style="color:var(--muted)">Ingen lyder funnet enda. Legg MP3-filer i public/sounds/ eller slipp dem under!</span></li>`;
         return;
       }
 
       soundListEl.innerHTML = '';
-      sounds.forEach((sound, idx) => {
+      sounds.forEach((sound) => {
+        const isDisabled = disabledSoundNames.has(sound.name);
+        const isPlayingThis = currentlyPlayingUrl === sound.url;
+
         const li = document.createElement('li');
-        li.className = 'sound-item' + (currentlyPlayingUrl === sound.url ? ' playing' : '');
+        li.className =
+          'sound-item' +
+          (isPlayingThis ? ' playing' : '') +
+          (isDisabled ? ' disabled-sound' : '');
 
         const nameSpan = document.createElement('span');
         nameSpan.className = 'sound-name';
         nameSpan.textContent = sound.name;
+        nameSpan.title = sound.name;
+
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'sound-actions';
 
         const tagSpan = document.createElement('span');
         tagSpan.className = 'tag';
         tagSpan.textContent = sound.source === 'repo' ? 'GitHub' : 'Lokal';
 
-        const playBtn = document.createElement('button');
-        playBtn.className = 'btn-secondary btn-sm';
-        playBtn.textContent = '▶ Prøv';
-        playBtn.addEventListener('click', () => {
-          initAudioEngine();
-          playSound(sound);
+        // Enable / Disable button for random rotation
+        const toggleEnableBtn = document.createElement('button');
+        toggleEnableBtn.className = isDisabled ? 'btn-danger-outline btn-sm' : 'btn-active-outline btn-sm';
+        toggleEnableBtn.textContent = isDisabled ? '🚫 Deaktivert' : '✅ Aktiv';
+        toggleEnableBtn.title = isDisabled
+          ? 'Klikk for å aktivere denne lyden igjen'
+          : 'Klikk for å deaktivere denne lyden fra tilfeldig avspilling';
+        toggleEnableBtn.addEventListener('click', () => {
+          if (disabledSoundNames.has(sound.name)) {
+            disabledSoundNames.delete(sound.name);
+            log(`✅ Aktiverte "${sound.name}"`);
+          } else {
+            disabledSoundNames.add(sound.name);
+            if (currentlyPlayingUrl === sound.url) {
+              stopCurrentSound();
+            }
+            log(`🚫 Deaktiverte "${sound.name}"`);
+          }
+          saveDisabledSounds();
+          renderSoundList();
         });
 
+        // Test / Stop preview button
+        const playBtn = document.createElement('button');
+        if (isPlayingThis) {
+          playBtn.className = 'btn-danger-outline btn-sm';
+          playBtn.textContent = '⏹ Stopp';
+          playBtn.addEventListener('click', () => {
+            stopCurrentSound();
+          });
+        } else {
+          playBtn.className = 'btn-secondary btn-sm';
+          playBtn.textContent = '▶ Prøv';
+          playBtn.addEventListener('click', () => {
+            initAudioEngine();
+            playSound(sound);
+          });
+        }
+
+        actionsDiv.appendChild(tagSpan);
+        actionsDiv.appendChild(toggleEnableBtn);
+        actionsDiv.appendChild(playBtn);
+
         li.appendChild(nameSpan);
-        li.appendChild(tagSpan);
-        li.appendChild(playBtn);
+        li.appendChild(actionsDiv);
         soundListEl.appendChild(li);
       });
     }
 
+    enableAllBtn.addEventListener('click', () => {
+      disabledSoundNames.clear();
+      saveDisabledSounds();
+      renderSoundList();
+      log('✅ Aktiverte alle lyder.');
+    });
+
+    disableAllBtn.addEventListener('click', () => {
+      sounds.forEach((s) => disabledSoundNames.add(s.name));
+      stopCurrentSound();
+      saveDisabledSounds();
+      renderSoundList();
+      log('🚫 Deaktiverte alle lyder.');
+    });
+
     // --- BLUETOOTH & TAB KEEP-ALIVE ENGINE ---
     function createSilentWavDataUri() {
-      // Generates a tiny 1-second 8kHz mono PCM WAV filled with near-zero signal so browser/OS media session stays active
       const sampleRate = 8000;
       const numSamples = sampleRate;
       const buffer = new ArrayBuffer(44 + numSamples * 2);
@@ -578,8 +700,8 @@
       writeString(8, 'WAVE');
       writeString(12, 'fmt ');
       view.setUint32(16, 16, true);
-      view.setUint16(20, 1, true); // PCM
-      view.setUint16(22, 1, true); // Mono
+      view.setUint16(20, 1, true);
+      view.setUint16(22, 1, true);
       view.setUint32(24, sampleRate, true);
       view.setUint32(28, sampleRate * 2, true);
       view.setUint16(32, 2, true);
@@ -587,7 +709,6 @@
       writeString(36, 'data');
       view.setUint32(40, numSamples * 2, true);
 
-      // Fill with alternating +/- 1 LSB (completely inaudible -90dB dithering to prevent Bluetooth hardware auto-mute)
       for (let i = 0; i < numSamples; i++) {
         view.setInt16(44 + i * 2, i % 2 === 0 ? 1 : -1, true);
       }
@@ -609,19 +730,17 @@
         audioCtx.resume();
       }
 
-      // 1. Sub-audible Web Audio oscillator (keeps DAC & Bluetooth link active)
       if (!keepAliveOsc) {
         keepAliveOsc = audioCtx.createOscillator();
         keepAliveGain = audioCtx.createGain();
         keepAliveOsc.type = 'sine';
-        keepAliveOsc.frequency.setValueAtTime(22, audioCtx.currentTime); // 22 Hz sub-bass
-        keepAliveGain.gain.setValueAtTime(0.0004, audioCtx.currentTime); // Effectively inaudible (-68 dB)
+        keepAliveOsc.frequency.setValueAtTime(22, audioCtx.currentTime);
+        keepAliveGain.gain.setValueAtTime(0.0004, audioCtx.currentTime);
         keepAliveOsc.connect(keepAliveGain);
         keepAliveGain.connect(audioCtx.destination);
         keepAliveOsc.start();
       }
 
-      // 2. HTML5 looped audio element (prevents background tab throttling in Chrome/Edge)
       if (!silentHtmlAudio) {
         silentHtmlAudio = new Audio(createSilentWavDataUri());
         silentHtmlAudio.loop = true;
@@ -680,17 +799,18 @@
 
     // --- PLAYBACK ---
     function pickRandomSound() {
-      if (sounds.length === 0) return null;
-      if (sounds.length === 1) return sounds[0];
-      const candidates = sounds.filter((s) => s.url !== lastPlayedUrl);
-      const pool = candidates.length > 0 ? candidates : sounds;
+      const activePool = getActiveSounds();
+      if (activePool.length === 0) return null;
+      if (activePool.length === 1) return activePool[0];
+      const candidates = activePool.filter((s) => s.url !== lastPlayedUrl);
+      const pool = candidates.length > 0 ? candidates : activePool;
       const randomIndex = Math.floor(Math.random() * pool.length);
       return pool[randomIndex];
     }
 
     function playSound(soundObj) {
       if (!soundObj) {
-        log('Ingen lyder å spille av!');
+        log('⚠️ Ingen aktive lyder å spille av! Aktiver minst én lyd i listen.');
         return;
       }
 
@@ -701,8 +821,8 @@
       audio.crossOrigin = 'anonymous';
       activeAudioElement = audio;
       lastPlayedUrl = soundObj.url;
+      currentlyPlayingUrl = soundObj.url;
 
-      // Connect through Web Audio API GainNode so we support up to 200% volume boost
       const volMultiplier = parseInt(volumeSlider.value, 10) / 100;
       try {
         const track = audioCtx.createMediaElementSource(audio);
@@ -716,7 +836,7 @@
       }
 
       stopSoundBtn.style.display = 'inline-flex';
-      renderSoundList(soundObj.url);
+      renderSoundList();
 
       audio.play().then(() => {
         playedCount++;
@@ -729,7 +849,8 @@
       audio.addEventListener('ended', () => {
         stopSoundBtn.style.display = 'none';
         activeAudioElement = null;
-        renderSoundList(null);
+        currentlyPlayingUrl = null;
+        renderSoundList();
       });
     }
 
@@ -739,8 +860,9 @@
         activeAudioElement.currentTime = 0;
         activeAudioElement = null;
       }
+      currentlyPlayingUrl = null;
       stopSoundBtn.style.display = 'none';
-      renderSoundList(null);
+      renderSoundList();
     }
 
     // --- SCHEDULER ---
@@ -756,7 +878,6 @@
       const minMs = minVal * unitMultiplier;
       const maxMs = maxVal * unitMultiplier;
 
-      // Uniformly random millisecond offset between minMs and maxMs
       const randomDelayMs = Math.floor(minMs + Math.random() * (maxMs - minMs));
       nextTriggerTimestamp = Date.now() + randomDelayMs;
 
@@ -790,7 +911,6 @@
       if (!isRunning) return;
       const now = Date.now();
       if (nextTriggerTimestamp && now >= nextTriggerTimestamp) {
-        // Refresh repo manifest quietly before picking, in case new files were pushed
         loadRepoSounds(true).finally(() => {
           const chosen = pickRandomSound();
           playSound(chosen);
@@ -816,7 +936,6 @@
       if (countdownInterval) clearInterval(countdownInterval);
       countdownInterval = setInterval(tickScheduler, 500);
 
-      // Poll for newly pushed GitHub sounds every 3 minutes
       if (manifestPollInterval) clearInterval(manifestPollInterval);
       manifestPollInterval = setInterval(() => loadRepoSounds(true), 180 * 1000);
 
